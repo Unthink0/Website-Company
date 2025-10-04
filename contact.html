@@ -7,7 +7,8 @@
     <link rel="icon" href="images/logo.ico">
     <link rel="stylesheet" href="assets/css/main.css">
     <style>
-        body {
+        /* Page-specific body class */
+        body.contact-page {
             background-color: #7393B3;
             color: #333;
             font-family: 'Arial', sans-serif;
@@ -15,17 +16,20 @@
             padding: 100px 20px;
             position: relative;
         }
-        h1 {
+
+        body.contact-page h1 {
             font-size: 3rem;
             margin-bottom: 20px;
             color: #222;
         }
-        p {
+
+        body.contact-page p {
             font-size: 1.2rem;
             margin-bottom: 40px;
             color: #555;
         }
-        a.button {
+
+        body.contact-page a.button {
             padding: 10px 20px;
             background-color: #333;
             color: #fff;
@@ -34,32 +38,56 @@
             font-size: 1rem;
             transition: background-color 0.3s;
         }
-        a.button:hover {
+
+        body.contact-page a.button:hover {
             background-color: #555;
         }
 
         /* Top-right Home button */
-        .home-button {
+        body.contact-page .home-button {
             position: absolute;
             top: 20px;
             right: 20px;
         }
 
-        /* Optional: smaller logo at top center */
-        img.logo {
+        /* Logo styling */
+        body.contact-page img.logo {
             display: block;
             margin: 0 auto 20px;
         }
+
+        /* Dark blue input fields scoped to this page */
+        body.contact-page input[type="text"],
+        body.contact-page input[type="email"],
+        body.contact-page input[type="tel"],
+        body.contact-page textarea {
+            background-color: #1F3B5D; /* dark blue */
+            color: #fff;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        body.contact-page input::placeholder,
+        body.contact-page textarea::placeholder {
+            color: #ccc;
+        }
     </style>
 </head>
-<body>
+<body class="contact-page">
 
     <!-- Home button top right -->
     <a href="index.html" class="button home-button">Home</a>
 
+    <!-- Logo -->
     <img src="images/big-logo.png" alt="Unthink Design Logo" width="120" height="120" class="logo">
+
+    <!-- Page Heading -->
     <h1>Get in Contact!</h1>
 
+    <!-- Contact Form -->
     <form method="post" action="https://formsubmit.co/contact@unthinkdesign.com">
         <div class="row">
             <div class="col-6 col-12-mobilep">
