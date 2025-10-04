@@ -227,6 +227,15 @@
 							<div class="col-6 col-12-mobilep">
 								<input type="email" name="email" placeholder="Email*" required/>
 							</div>
+							<div class="col-6 col-12-mobilep">
+								<input 
+							  type="tel" 
+							  name="phone" 
+							  placeholder="Phone*" 
+							  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
+							  oninput="validatePhone(this)" 
+							  required/>
+							</div>
 							<div class="col-12">
 								<textarea name="message" placeholder="What are you looking to do?" rows="6"></textarea>
 							</div>
@@ -261,10 +270,22 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script>
+  function validatePhone(input) {
+    // Clear any existing error
+    input.setCustomValidity("");
+
+    // If pattern doesn’t match, show custom message
+    if (!input.checkValidity()) {
+      input.setCustomValidity("Please enter phone number in the format: 123-456-7890");
+    }
+  }
+			</script>
 
 	</body>
 
 </html>
+
 
 
 
