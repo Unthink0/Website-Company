@@ -7,77 +7,100 @@
     <link rel="icon" href="images/logo.ico">
     <link rel="stylesheet" href="assets/css/main.css">
     <style>
-        /* Page-specific body class */
-        body.contact-page {
-            background-color: #708090;
+        body {
+            background-color: #7393B3;
             color: #333;
             font-family: 'Arial', sans-serif;
             text-align: center;
             padding: 100px 20px;
             position: relative;
         }
-
-        body.contact-page h1 {
+        h1 {
             font-size: 3rem;
             margin-bottom: 20px;
-            color: #fff;
+            color: #fff; /* Title white */
         }
-
-        body.contact-page p {
+        p {
             font-size: 1.2rem;
             margin-bottom: 40px;
-            color: #fff;
+            color: #fff; /* Paragraph white */
         }
-
-        body.contact-page a.button {
+        a.button {
             padding: 10px 20px;
-            background-color: #333;
             color: #fff;
             text-decoration: none;
             border-radius: 5px;
             font-size: 1rem;
-            transition: background-color 0.3s;
+            transition: opacity 0.3s;
+        }
+        a.button:hover {
+            opacity: 0.8;
         }
 
-        body.contact-page a.button:hover {
-            background-color: #555;
-        }
-
-        /* Top-right Home button */
-        body.contact-page .home-button {
+        /* Home button top right */
+        .home-button {
             position: absolute;
-            background-color: #1F3B5D;
             top: 20px;
             right: 20px;
+            background-color: #1a3d6d; /* same as input boxes */
         }
 
         /* Logo styling */
-        body.contact-page img.logo {
+        img.logo {
             display: block;
             margin: 0 auto 20px;
         }
 
-        /* Dark blue input fields scoped to this page */
-        body.contact-page input[type="text"],
-        body.contact-page input[type="email"],
-        body.contact-page input[type="tel"],
-        body.contact-page textarea {
-            background-color: #1F3B5D; /* dark blue */
-            color: #fff;
-            border: 1px solid #fff;
-            border-radius: 5px;
+        /* Dark blue inputs and text white with glow effect */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea {
+            background-color: #1a3d6d; /* dark blue */
+            color: #fff; /* text inside boxes white */
+            border: none;
             padding: 10px;
+            border-radius: 5px;
             width: 100%;
             box-sizing: border-box;
+            transition: box-shadow 0.3s, transform 0.2s;
         }
 
-        body.contact-page input::placeholder,
-        body.contact-page textarea::placeholder {
-            color: #ccc;
+        input::placeholder,
+        textarea::placeholder {
+            color: #ccc; /* lighter placeholder text */
+        }
+
+        /* Glow effect on focus */
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        textarea:focus {
+            outline: none;
+            box-shadow: 0 0 8px 2px #72a1e5;
+            transform: translateY(-2px);
+        }
+
+        /* Submit button styled like inputs with glow */
+        input[type="submit"] {
+            background-color: #1a3d6d; /* dark blue */
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: box-shadow 0.3s, transform 0.2s, opacity 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            opacity: 0.9;
+            box-shadow: 0 0 10px 3px #72a1e5;
+            transform: translateY(-2px);
         }
     </style>
 </head>
-<body class="contact-page">
+<body>
 
     <!-- Home button top right -->
     <a href="index.html" class="button home-button">Home</a>
