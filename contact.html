@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="assets/css/main.css">
     <style>
         body {
-            background-color: #7393B3;
+            background-color: #708090; /* Slate Gray background */
             color: #333;
             font-family: 'Arial', sans-serif;
             text-align: center;
@@ -31,18 +31,23 @@
             text-decoration: none;
             border-radius: 5px;
             font-size: 1rem;
-            transition: opacity 0.3s;
+            transition: box-shadow 0.3s, transform 0.2s, opacity 0.3s;
         }
         a.button:hover {
-            opacity: 0.8;
+            opacity: 0.9;
         }
 
-        /* Home button top right */
+        /* Home button top right with glow */
         .home-button {
             position: absolute;
             top: 20px;
             right: 20px;
             background-color: #1a3d6d; /* same as input boxes */
+            transition: box-shadow 0.3s, transform 0.2s;
+        }
+        .home-button:hover {
+            box-shadow: 0 0 10px 3px #72a1e5;
+            transform: translateY(-2px);
         }
 
         /* Logo styling */
