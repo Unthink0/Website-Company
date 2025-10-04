@@ -1,1 +1,105 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Unthink Design</title>
+    <link rel="icon" href="images/logo.ico">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        body {
+            background-color: #f4f4f4;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 100px 20px;
+            position: relative;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #222;
+        }
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: #555;
+        }
+        a.button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        a.button:hover {
+            background-color: #555;
+        }
 
+        /* Top-right Home button */
+        .home-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        /* Optional: smaller logo at top center */
+        img.logo {
+            display: block;
+            margin: 0 auto 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Home button top right -->
+    <a href="index.html" class="button home-button">Home</a>
+
+    <img src="images/big-logo.png" alt="Unthink Design Logo" width="120" height="120" class="logo">
+    <h1>Get in Contact!</h1>
+
+    <form method="post" action="https://formsubmit.co/contact@unthinkdesign.com">
+        <div class="row">
+            <div class="col-6 col-12-mobilep">
+                <input type="text" name="name" placeholder="Name*" required/>
+            </div>
+            <div class="col-6 col-12-mobilep">
+                <input type="email" name="email" placeholder="Email*" required/>
+            </div>
+            <div class="col-6 col-12">
+                <input 
+                    type="tel" 
+                    name="phone" 
+                    placeholder="Phone*" 
+                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
+                    oninput="validatePhone(this)" 
+                    required/>
+            </div>
+            <div class="col-12">
+                <textarea name="message" placeholder="What are you looking to do?" rows="6"></textarea>
+            </div>
+            <div class="col-12">
+                <ul class="actions special">
+                    <li><input type="submit" value="Submit" /></li>
+                </ul>
+            </div>
+        </div>
+        <input type="hidden" name="_next" value="https://unthinkdesign.com/thank-you">
+        <input type="hidden" name="_captcha" value="false">
+    </form>
+
+    <p>* Indicates required information</p>
+
+    <script>
+        function validatePhone(input) {
+            input.setCustomValidity("");
+            if (!input.checkValidity()) {
+                input.setCustomValidity("Please enter phone number in the format: 123-456-7890");
+            }
+        }
+    </script>
+
+</body>
+</html>
