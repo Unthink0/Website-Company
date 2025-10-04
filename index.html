@@ -319,15 +319,15 @@
 			</script>
 		<script>
   // Replace with your actual site key
-  const RECAP_SITE_KEY = "YOUR_SITE_KEY_HERE";
+  const RECAP_SITE_KEY = "6LfT5d0rAAAAAK3V8kO7D4wONsrfuYsdP0EAsYsq";
   let recaptchaWidgetId = null;
   let grecaptchaReady = false;
 
   function onRecaptchaLoad() {
     // render the v2 checkbox into the #recap container
     recaptchaWidgetId = grecaptcha.render('recap', {
-      'sitekey': 6LfT5d0rAAAAAK3V8kO7D4wONsrfuYsdP0EAsYsq,
-      'theme': 'light'
+      'sitekey': RECAP_SITE_KEY,
+      'theme': 'dark'
     });
     grecaptchaReady = true;
   }
@@ -368,6 +368,7 @@
 	</body>
 
 </html>
+
 
 
 
