@@ -268,7 +268,10 @@
 							</div>
 							<div class="col-6 col-12">
       <!-- Add the reCAPTCHA widget -->
-     						 <div class="g-recaptcha" data-sitekey="6LfT5d0rAAAAAK3V8kO7D4wONsrfuYsdP0EAsYsq" required></div>
+     						 <div id="recap"></div>
+      <div id="recapError" style="color:#c00;display:none;margin-top:6px;font-size:0.9rem;">
+        Please complete the reCAPTCHA.
+      </div>
    							 </div>
 							<div class="col-12">
 								<ul class="actions special">
@@ -314,23 +317,58 @@
     }
   }
 			</script>
-		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 		<script>
-  document.getElementById('contactForm').addEventListener('submit', function(e) {
-    var response = grecaptcha.getResponse();
-    if(response.length === 0) { 
-      // reCAPTCHA not verified
-      alert("Please complete the reCAPTCHA");
-      e.preventDefault(); // stop form submission
-      return false;
-    }
-    // reCAPTCHA verified — allow submission
+  // Replace with your actual site key
+  const RECAP_SITE_KEY = "YOUR_SITE_KEY_HERE";
+  let recaptchaWidgetId = null;
+  let grecaptchaReady = false;
+
+  function onRecaptchaLoad() {
+    // render the v2 checkbox into the #recap container
+    recaptchaWidgetId = grecaptcha.render('recap', {
+      'sitekey': RECAP_SITE_KEY,
+      'theme': 'light'
+    });
+    grecaptchaReady = true;
+  }
+
+  // Attach submit handler after DOM ready
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contactForm');
+    const recapError = document.getElementById('recapError');
+
+    form.addEventListener('submit', function(e) {
+      // If grecaptcha not ready, block submit and show message
+      if (!grecaptchaReady || typeof grecaptcha === 'undefined') {
+        e.preventDefault();
+        recapError.textContent = "reCAPTCHA not loaded yet. Please wait a second and try again.";
+        recapError.style.display = "block";
+        return;
+      }
+
+      // Get the response for the specific widget instance
+      const resp = grecaptcha.getResponse(recaptchaWidgetId || null) || "";
+      if (resp.length === 0) {
+        e.preventDefault(); // prevent submission
+        recapError.textContent = "Please complete the reCAPTCHA.";
+        recapError.style.display = "block";
+        // optional: focus the widget container so user sees it
+        document.getElementById('recap').scrollIntoView({behavior:'smooth', block:'center'});
+        return false;
+      }
+
+      // If passed, let it submit. (FormSubmit will validate server-side too.)
+      recapError.style.display = "none";
+    });
   });
 </script>
 
+<!-- Explicit render: note the "onload" query param points to onRecaptchaLoad -->
+<script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
 	</body>
 
 </html>
+
 
 
 
