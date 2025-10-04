@@ -315,10 +315,23 @@
   }
 			</script>
 		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+		<script>
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    var response = grecaptcha.getResponse();
+    if(response.length === 0) { 
+      // reCAPTCHA not verified
+      alert("Please complete the reCAPTCHA");
+      e.preventDefault(); // stop form submission
+      return false;
+    }
+    // reCAPTCHA verified — allow submission
+  });
+</script>
 
 	</body>
 
 </html>
+
 
 
 
