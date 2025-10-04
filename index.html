@@ -219,7 +219,7 @@
 					<a href="tel:7013535282"> (701) 353-5282 </a>
 					</p>
 
-					<form method="post" action="https://formspree.io/f/meorkbyr">
+			<!--		<form method="post" action="https://formspree.io/f/meorkbyr">
 						<div class="row">
 							<div class="col-6 col-12-mobilep">
 								<input type="text" name="name" placeholder="Name*" required/>
@@ -245,7 +245,36 @@
 								</ul>
 							</div>
 						</div>
-					</form>
+					</form> -->
+					<form method="post" action="https://formspree.io/f/meorkbyr">
+						<div class="row">
+							<div class="col-6 col-12-mobilep">
+								<input type="text" name="name" placeholder="Name*" required/>
+							</div>
+							<div class="col-6 col-12-mobilep">
+								<input type="email" name="email" placeholder="Email*" required/>
+							</div>
+						<div class="row">
+							<div class="col-12">
+								<input 
+							  type="tel" 
+							  name="phone" 
+							  placeholder="Phone*" 
+							  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
+							  oninput="validatePhone(this)" 
+							  required/>
+							</div>
+							<div class="col-12">
+								<textarea name="message" placeholder="What are you looking to do?" rows="6"></textarea>
+							</div>
+							<div class="col-12">
+								<ul class="actions special">
+									<li><input type="submit" value="Submit" /></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+			</form>
 
 					<p>* Indicates required information</p>
 
@@ -285,6 +314,7 @@
 	</body>
 
 </html>
+
 
 
 
