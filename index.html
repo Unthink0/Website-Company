@@ -6,12 +6,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-<!-- Smooth scroll -->
-		<style>
-			html {
-				scroll-behavior: smooth;
-			}
-		</style>
+
 	</head>
 
 	
@@ -319,9 +314,41 @@
     }
   }
 			</script>
+<script>
+        // Slower smooth scroll for "What We Offer"
+        document.getElementById('scrollButton').addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default jump
+
+            const target = document.querySelector('#main');
+            const targetPosition = target.getBoundingClientRect().top + window.scrollY;
+            const startPosition = window.scrollY;
+            const distance = targetPosition - startPosition;
+            const duration = 1200; // duration in ms (1.2 seconds)
+            let startTime = null;
+
+            function animation(currentTime) {
+                if (startTime === null) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const run = ease(timeElapsed, startPosition, distance, duration);
+                window.scrollTo(0, run);
+                if (timeElapsed < duration) requestAnimationFrame(animation);
+            }
+
+            function ease(t, b, c, d) {
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t + b;
+                t--;
+                return -c / 2 * (t * (t - 2) - 1) + b;
+            }
+
+            requestAnimationFrame(animation);
+        });
+    </script>
+		
 	</body>
 
 </html>
+
 
 
 
