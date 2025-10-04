@@ -266,13 +266,6 @@
 							<div class="col-12">
 								<textarea name="message" placeholder="What are you looking to do?" rows="6"></textarea>
 							</div>
-							<div class="col-6 col-12">
-      <!-- Add the reCAPTCHA widget -->
-     						 <div id="recap"></div>
-      <div id="recapError" style="color:#c00;display:none;margin-top:6px;font-size:0.9rem;">
-        Please complete the reCAPTCHA.
-      </div>
-   							 </div>
 							<div class="col-12">
 								<ul class="actions special">
 									<li><input type="submit" value="Submit" /></li>
@@ -317,57 +310,10 @@
     }
   }
 			</script>
-		<script>
-  // Replace with your actual site key
-  const RECAP_SITE_KEY = "6LfT5d0rAAAAAK3V8kO7D4wONsrfuYsdP0EAsYsq";
-  let recaptchaWidgetId = null;
-  let grecaptchaReady = false;
-
-  function onRecaptchaLoad() {
-    // render the v2 checkbox into the #recap container
-    recaptchaWidgetId = grecaptcha.render('recap', {
-      'sitekey': RECAP_SITE_KEY,
-      'theme': 'dark'
-    });
-    grecaptchaReady = true;
-  }
-
-  // Attach submit handler after DOM ready
-  document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('contactForm');
-    const recapError = document.getElementById('recapError');
-
-    form.addEventListener('submit', function(e) {
-      // If grecaptcha not ready, block submit and show message
-      if (!grecaptchaReady || typeof grecaptcha === 'undefined') {
-        e.preventDefault();
-        recapError.textContent = "reCAPTCHA not loaded yet. Please wait a second and try again.";
-        recapError.style.display = "block";
-        return;
-      }
-
-      // Get the response for the specific widget instance
-      const resp = grecaptcha.getResponse(recaptchaWidgetId || null) || "";
-      if (resp.length === 0) {
-        e.preventDefault(); // prevent submission
-        recapError.textContent = "Please complete the reCAPTCHA.";
-        recapError.style.display = "block";
-        // optional: focus the widget container so user sees it
-        document.getElementById('recap').scrollIntoView({behavior:'smooth', block:'center'});
-        return false;
-      }
-
-      // If passed, let it submit. (FormSubmit will validate server-side too.)
-      recapError.style.display = "none";
-    });
-  });
-</script>
-
-<!-- Explicit render: note the "onload" query param points to onRecaptchaLoad -->
-<script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
 	</body>
 
 </html>
+
 
 
 
