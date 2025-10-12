@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Download</title>
+<style>
+  body {
+    background: #111;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 50px 20px;
+  }
+  img {
+    max-width: 80%;
+    border-radius: 12px;
+    margin: 20px 0;
+  }
+  button {
+    padding: 15px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: #1e90ff;
+    color: white;
+    cursor: not-allowed;
+    transition: background-color 0.2s ease;
+  }
+  button.enabled {
+    cursor: pointer;
+    background-color: #28a745;
+  }
+</style>
+</head>
+<body>
+
+<h1 id="video-title">Sample Video Title</h1>
+<img src="../images/video-thumbnail.jpg" alt="Video Thumbnail">
+
+<br><br>
+<!-- Button initially disabled -->
+<a id="download-link" href="#" target="_blank">
+  <button id="download-button">Download Link in 10 Seconds</button>
+</a>
+
+<script>
+  // Popup alert before starting the timer
+  alert("Please click an ad to support us before downloading!");
+
+  // Countdown timer in seconds
+  let countdown = 10;
+  const button = document.getElementById("download-button");
+  const link = document.getElementById("download-link");
+
+  // Set the actual download URL
+  const downloadURL = "https://example.com/video.mp4"; // Replace with your video URL
+
+  // Start the countdown
+  const timer = setInterval(() => {
+    countdown--;
+    if (countdown > 0) {
+      button.textContent = `Download Link in ${countdown} Seconds`;
+    } else {
+      clearInterval(timer);
+      button.textContent = "Download Link";
+      button.classList.add("enabled");
+      link.href = downloadURL; // Make the button clickable
+    }
+  }, 1000);
+</script>
+
+</body>
+</html>
