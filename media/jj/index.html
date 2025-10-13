@@ -1,122 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Juicy Jackie</title>
-  <style>
-    :root{
-      --bg:#0f0f0f;
-      --panel:#1c1c1c;
-      --muted:#bfbfbf;
-      --accent:#111;
-      --gap:12px;
-    }
-    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;}
-    body{
-      background:var(--bg);
-      color:var(--muted);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-    }
-
-    header{
-      width:100%;
-      background:#131313;
-      padding:28px 16px;
-      text-align:center;
-      box-shadow:0 2px 12px rgba(0,0,0,0.6);
-    }
-    header h1{margin:0;font-size:1.375rem;color:#fff;letter-spacing:0.2px;}
-
-    .wrap{
-      width:min(1280px, 96%);
-      margin:28px auto;
-    }
-
-    /* grid: 5 columns fixed for desktop */
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: var(--gap);
-    }
-
-    /* Each tile */
-    .tile{
-      background:var(--panel);
-      border-radius:10px;
-      overflow:hidden;
-      display:block;
-      box-shadow:0 6px 18px rgba(0,0,0,0.55);
-      transform-origin:center;
-      transition:transform .18s ease, box-shadow .18s ease;
-    }
-    .tile:focus,
-    .tile:hover{ transform:translateY(-6px); box-shadow:0 12px 26px rgba(0,0,0,0.65); outline: none; }
-
-    /* image sizing and crop */
-    .tile img{
-      width:100%;
-      height:150px;            /* smaller images — adjust if you want taller */
-      object-fit:cover;        /* crop to fill */
-      display:block;
-    }
-
-    .caption{
-      padding:10px 12px;
-      font-size:0.85rem;
-      color:var(--muted);
-      background:linear-gradient(0deg, rgba(255,255,255,0.01), transparent);
-    }
-
-    /* make responsive: on smaller screens fall back to fewer columns */
-    @media (max-width:1100px){
-      .grid{ grid-template-columns: repeat(4, 1fr); }
-    }
-    @media (max-width:860px){
-      .grid{ grid-template-columns: repeat(3, 1fr); }
-    }
-    @media (max-width:560px){
-      .grid{ grid-template-columns: repeat(2, 1fr); }
-      .tile img{ height:120px; }
-    }
-
-    /* Keep the page from growing too tall on mobile */
-    footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:center; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Juicy Jackie</title>
+<style>
+:root{
+  --bg:#0f0f0f;
+  --panel:#1c1c1c;
+  --muted:#bfbfbf;
+  --accent:#111;
+  --gap:12px;
+}
+html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;}
+body{
+  background:var(--bg);
+  color:var(--muted);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+header{
+  width:100%;
+  background:#131313;
+  padding:28px 16px;
+  text-align:center;
+  box-shadow:0 2px 12px rgba(0,0,0,0.6);
+}
+header h1{margin:0;font-size:1.375rem;color:#fff;letter-spacing:0.2px;}
+.wrap{
+  width:min(1280px, 96%);
+  margin:28px auto;
+}
+.grid{
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--gap);
+}
+.tile{
+  background:var(--panel);
+  border-radius:10px;
+  overflow:hidden;
+  display:block;
+  box-shadow:0 6px 18px rgba(0,0,0,0.55);
+  transform-origin:center;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.tile:focus,
+.tile:hover{ transform:translateY(-6px); box-shadow:0 12px 26px rgba(0,0,0,0.65); outline: none; }
+.tile img{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  display:block;
+}
+.caption{
+  padding:10px 12px;
+  font-size:0.85rem;
+  color:var(--muted);
+  background:linear-gradient(0deg, rgba(255,255,255,0.01), transparent);
+}
+@media (max-width:1100px){ .grid{ grid-template-columns: repeat(4, 1fr); } }
+@media (max-width:860px){ .grid{ grid-template-columns: repeat(3, 1fr); } }
+@media (max-width:560px){ .grid{ grid-template-columns: repeat(2, 1fr); } .tile img{ height:120px; } }
+footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:center; }
+#load-more{
+  margin:20px auto;
+  padding: 12px 24px;
+  font-size: 16px;
+  border:none;
+  border-radius:8px;
+  background-color:#28a745;
+  color:white;
+  cursor:pointer;
+  display:block;
+}
+.sort-container{
+  text-align:center;
+  margin-bottom:16px;
+}
+.sort-container select{
+  padding:6px 12px;
+  border-radius:6px;
+  font-size:16px;
+}
+</style>
 </head>
 <body>
-  <header>
-    <h1>Juicy Jackie</h1>
-  </header>
+<header>
+  <h1>Juicy Jackie</h1>
+</header>
 
-  <main class="wrap" role="main" aria-label="Media gallery">
-    <section class="grid" aria-label="Image grid">
-      <!-- 15 image tiles (5 per row × 3 rows) -->
-      <a class="tile" href="video1" tabindex="0"><img src="images/img01.jpg" alt="Image 1"><div class="caption">Video 1</div></a>
-      <a class="tile" href="#" tabindex="0"><img src="images/img02.jpg" alt="Image 2"><div class="caption">Image 2</div></a>
-      <a class="tile" href="#" tabindex="0"><img src="images/img03.jpg" alt="Image 3"><div class="caption">Image 3</div></a>
-      <a class="tile" href="#" tabindex="0"><img src="images/img04.jpg" alt="Image 4"><div class="caption">Image 4</div></a>
-      <a class="tile" href="#" tabindex="0"><img src="images/img05.jpg" alt="Image 5"><div class="caption">Image 5</div></a>
+<main class="wrap" role="main" aria-label="Media gallery">
 
-      <a class="tile" href="#" tabindex="0"><img src="images/img06.jpg" alt="Image 6"><div class="caption">Image 6</div></a>
-      <a class="tile" href="#" tabindex="0"><img src="images/img07.jpg" alt="Image 7"><div class="caption">Image 7</div></a>
-      <a class="tile" href="#" tabindex="0"><img src="images/img08.jpg" alt="Image 8"><div class="caption">Image 8</div></a>
-      <a class="tile" href="#" tabindex="0"><img src="images/img09.jpg" alt="Image 9"><div class="caption">Image 9</div></a>
-      <a class="tile" href="#" tabindex="0"><img src="images/img10.jpg" alt="Image 10"><div class="caption">Image 10</div></a>
+  <!-- Sort By -->
+  <div class="sort-container">
+    <label for="sortSelect" style="color:white; margin-right:8px;">Sort By:</label>
+    <select id="sortSelect">
+      <option value="desc" selected>Highest to Lowest</option>
+      <option value="asc">Lowest to Highest</option>
+      <option value="default">Default</option>
+    </select>
+  </div>
 
-      <a class="tile" href="#" tabindex="0"><img src="images/img11.jpg" alt="Image 11"><div class="caption">Image 11</div></a>
-      <a class="tile" href="#" tabindex="0"><img src="images/img12.jpg" alt="Image 12"><div class="caption">Image 12</div></a>
-      <a class="tile" href="#" tabindex="0"><img src="images/img13.jpg" alt="Image 13"><div class="caption">Image 13</div></a>
-      <a class="tile" href="#" tabindex="0"><img src="images/img14.jpg" alt="Image 14"><div class="caption">Image 14</div></a>
-      <a class="tile" href="#" tabindex="0"><img src="images/img15.jpg" alt="Image 15"><div class="caption">Image 15</div></a>
-    </section>
-  </main>
+  <section class="grid" id="image-grid" aria-label="Image grid">
+    <!-- Initial 15 image tiles with data-value -->
+    <a class="tile" href="#" tabindex="0" data-value="15"><img src="images/img01.jpg" alt="Image 1"><div class="caption">Video 1</div></a>
+    <a class="tile" href="#" tabindex="0" data-value="14"><img src="images/img02.jpg" alt="Image 2"><div class="caption">Image 2</div></a>
+    <a class="tile" href="#" tabindex="0" data-value="13"><img src="images/img03.jpg" alt="Image 3"><div class="caption">Image 3</div></a>
+    <a class="tile" href="#" tabindex="0" data-value="12"><img src="images/img04.jpg" alt="Image 4"><div class="caption">Image 4</div></a>
+    <a class="tile" href="#" tabindex="0" data-value="11"><img src="images/img05.jpg" alt="Image 5"><div class="caption">Image 5</div></a>
+    <a class="tile" href="#" tabindex="0" data-value="10"><img src="images/img06.jpg" alt="Image 6"><div class="caption">Image 6</div></a>
+    <a class="tile" href="#" tabindex="0" data-value="9"><img src="images/img07.jpg" alt="Image 7"><div class="caption">Image 7</div></a>
+    <a class="tile" href="#" tabindex="0" data-value="8"><img src="images/img08.jpg" alt="Image 8"><div class="caption">Image 8</div></a>
+    <a class="tile" href="#" tabindex="0" data-value="7"><img src="images/img09.jpg" alt="Image 9"><div class="caption">Image 9</div></a>
+    <a class="tile" href="#" tabindex="0" data-value="6"><img src="images/img10.jpg" alt="Image 10"><div class="caption">Image 10</div></a>
+    <a class="tile" href="#" tabindex="0" data-value="5"><img src="images/img11.jpg" alt="Image 11"><div class="caption">Image 11</div></a>
+    <a class="tile" href="#" tabindex="0" data-value="4"><img src="images/img12.jpg" alt="Image 12"><div class="caption">Image 12</div></a>
+    <a class="tile" href="#" tabindex="0" data-value="3"><img src="images/img13.jpg" alt="Image 13"><div class="caption">Image 13</div></a>
+    <a class="tile" href="#" tabindex="0" data-value="2"><img src="images/img14.jpg" alt="Image 14"><div class="caption">Image 14</div></a>
+    <a class="tile" href="#" tabindex="0" data-value="1"><img src="images/img15.jpg" alt="Image 15"><div class="caption">Image 15</div></a>
+  </section>
 
-  <footer>Replace the <code>src</code> attributes with your image paths (local or remote).</footer>
+  <button id="load-more">Load More</button>
+</main>
+
+<footer>Replace the <code>src</code> attributes with your image paths (local or remote).</footer>
+
+<script>
+const grid = document.getElementById("image-grid");
+const loadMore = document.getElementById("load-more");
+const sortSelect = document.getElementById("sortSelect");
+
+let nextImage = 16; // next image number
+
+// Save initial order
+Array.from(grid.children).forEach((tile, index)=>{
+  tile.dataset.originalOrder = index;
+});
+
+// Load More functionality
+loadMore.addEventListener("click", () => {
+  for (let i = 0; i < 15; i++) {
+    const tile = document.createElement("a");
+    tile.className = "tile";
+    tile.href = "#";
+    tile.tabIndex = 0;
+    tile.dataset.value = nextImage; // assign value for sorting
+    tile.dataset.originalOrder = grid.children.length; // maintain order
+
+    const img = document.createElement("img");
+    img.src = `images/img${String(nextImage).padStart(2,'0')}.jpg`;
+    img.alt = `Image ${nextImage}`;
+
+    const caption = document.createElement("div");
+    caption.className = "caption";
+    caption.textContent = `Image ${nextImage}`;
+
+    tile.appendChild(img);
+    tile.appendChild(caption);
+    grid.appendChild(tile);
+
+    nextImage++;
+  }
+  sortGrid(); // sort new tiles automatically
+});
+
+// Sorting function
+function sortGrid(){
+  const tiles = Array.from(grid.children);
+  let sorted;
+  if(sortSelect.value === "asc"){
+    sorted = tiles.sort((a,b)=> parseInt(a.dataset.value) - parseInt(b.dataset.value));
+  } else if(sortSelect.value === "desc"){
+    sorted = tiles.sort((a,b)=> parseInt(b.dataset.value) - parseInt(a.dataset.value));
+  } else {
+    sorted = tiles.sort((a,b)=> a.dataset.originalOrder - b.dataset.originalOrder);
+  }
+
+  grid.innerHTML = "";
+  sorted.forEach(tile => grid.appendChild(tile));
+}
+
+// Trigger sorting on dropdown change
+sortSelect.addEventListener("change", sortGrid);
+
+// Sort by highest to lowest on page load
+window.addEventListener("DOMContentLoaded", ()=> {
+  sortSelect.value = "desc";
+  sortGrid();
+});
+</script>
 </body>
 </html>
-
