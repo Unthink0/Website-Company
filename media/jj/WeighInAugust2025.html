@@ -80,7 +80,7 @@
 
     <br><br>
     <a href="javascript:void(0);">
-      <button id="download-button" onclick="openEmbedded()">Download Link in 10 Seconds</button>
+      <button id="download-button" onclick="openEmbedded()">Please Wait, Loading...</button>
     </a>
     <div id="reload-text"></div>
   </div>
@@ -90,7 +90,7 @@
 </div>
 
 <script>
-  let countdown = 10;
+  let countdown = 11;
   const button = document.getElementById("download-button");
   const reloadText = document.getElementById("reload-text");
 
@@ -106,7 +106,7 @@
         button.classList.add("enabled");
       }
     }, 1000);
-  }, 2000); // 2000ms = 2 seconds
+  }, 1000); // 2000ms = 2 seconds
 
   function openEmbedded() {
     if (!button.classList.contains("enabled")) return;
