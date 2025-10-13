@@ -67,7 +67,10 @@
   a.custom-link:hover {
     text-decoration: underline; /* Underline on hover */
   }
-  
+   .video-wrapper {
+  position: relative;
+  display: inline-block;
+}
 .mute-btn {
   position: absolute;
   top: 28px;
@@ -81,7 +84,6 @@
   cursor: pointer;
   transition: background 0.2s ease;
 }
-
 .mute-btn:hover {
   background: rgba(0,0,0,0.8);
 }
@@ -100,7 +102,7 @@
     <div class="video-wrapper">
   <video id="preview-video" playsinline preload="metadata" loop muted autoplay
     poster="https://imagecdn.clips4sale.com/accounts99/135731/clip_images/previewlg_31134889.jpg"
-    src="https://imagecdn.clips4sale.com/accounts99/135731/clips_previews/prev_30895921.mp4">
+    src="https://imagecdn.clips4sale.com/accounts99/135731/clips_previews/prev_31134889.mp4">
   </video>
   <button id="mute-toggle" class="mute-btn">🔇</button>
 </div>
