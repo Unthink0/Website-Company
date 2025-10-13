@@ -67,6 +67,28 @@
   a.custom-link:hover {
     text-decoration: underline; /* Underline on hover */
   }
+  .video-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.mute-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.mute-btn:hover {
+  background: rgba(0,0,0,0.8);
+}
 </style>
 </head>
 <body>
@@ -79,7 +101,13 @@
   <!-- Main Content -->
   <div class="content">
     <h1 id="video-title">Blueberry Surprise Muffins</h1>
-    <video data-sensitive-media="true" playsinline="playsinline" role="video" class="vjs-tech" poster="https://imagecdn.clips4sale.com/accounts99/135731/clip_images/previewlg_30895921.jpg" disablepictureinpicture="" id="vjs_video_11698_html5_api" tabindex="-1" preload="metadata" loop="" muted="muted" autoplay="" src="https://imagecdn.clips4sale.com/accounts99/135731/clips_previews/prev_30895921.mp4"></video>
+    <div class="video-wrapper">
+  <video id="preview-video" playsinline preload="metadata" loop muted autoplay
+    poster="https://imagecdn.clips4sale.com/accounts99/135731/clip_images/previewlg_30895921.jpg"
+    src="https://imagecdn.clips4sale.com/accounts99/135731/clips_previews/prev_30895921.mp4">
+  </video>
+  <button id="mute-toggle" class="mute-btn">🔇</button>
+</div>
     <h2>4-9-2025 | 10 min | 1080p | <a href="/media/jj" target="_self" class="custom-link">Juicy Jackie</a></h2>
     <p>Someone seems to have left out some delicious blueberry muffins, so obviously they must be for me! But these muffins must be a little different, because the more I eat, the more turned on I get, and the tighter my clothes feel. Am I... getting bigger?! It feels soooo good!</p>
 
@@ -113,6 +141,14 @@
     }, 1000);
   }, 1000); // 1000ms = 1 second
 
+const video = document.getElementById("preview-video");
+const muteBtn = document.getElementById("mute-toggle");
+
+muteBtn.addEventListener("click", () => {
+  video.muted = !video.muted;
+  muteBtn.textContent = video.muted ? "🔇" : "🔊";
+});
+  
   function openEmbedded() {
     if (!button.classList.contains("enabled")) return;
 
