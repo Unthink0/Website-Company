@@ -76,8 +76,8 @@
     <img src="../images/video-thumbnail.jpg" alt="Video Thumbnail">
 
     <br><br>
-    <a id="download-link" href="#" target="_blank">
-      <button id="download-button">Download Link in 10 Seconds</button>
+    <a id="download-link" href="javascript:void(0);">
+      <button id="download-button" onclick="openEmbedded()">Download Link in 10 Seconds</button>
     </a>
   </div>
 
@@ -104,9 +104,6 @@
   const button = document.getElementById("download-button");
   const link = document.getElementById("download-link");
 
-  // Set the actual download URL
-  const downloadURL = "https://1drv.ms/v/c/56a0c4f446943249/EUkylEb0xKAggFYwDAAAAAABVkVZDD-5WODtx14dEh3rNA?e=DCZPyY"; // Replace with your video URL
-
   const timer = setInterval(() => {
     countdown--;
     if (countdown > 0) {
@@ -115,9 +112,33 @@
       clearInterval(timer);
       button.textContent = "Download Link";
       button.classList.add("enabled");
-      link.href = downloadURL;
+      // Enable button click
+      button.disabled = false;
     }
   }, 1000);
+
+  // Function to open about:blank and embed image/video
+  function openEmbedded() {
+    // Only run if countdown finished
+    if (!button.classList.contains("enabled")) return;
+
+    // Hide the button
+    button.style.display = "none";
+
+    // Open new about:blank window
+    const newWindow = window.open('about:blank', '_blank');
+
+    // Write embedded content
+    newWindow.document.write(`
+      <html>
+        <head><title>Embedded Video</title></head>
+        <body style="background:#111; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;">
+          <img src="https://1drv.ms/v/c/56a0c4f446943249/IQRJMpRG9MSgIIBWJwwAAAAAAYk1P_hI1YER4mtyaUFOTXo?width=640&height=480" 
+               width="640" height="480" style="border-radius:12px;" />
+        </body>
+      </html>
+    `);
+  }
 </script>
 
   <amp-ad width="100vw" height="320"
