@@ -66,17 +66,6 @@ header h1{margin:0;font-size:1.375rem;color:#fff;letter-spacing:0.2px;}
 @media (max-width:860px){ .grid{ grid-template-columns: repeat(3, 1fr); } }
 @media (max-width:560px){ .grid{ grid-template-columns: repeat(2, 1fr); } .tile img{ height:120px; } }
 footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:center; }
-#load-more{
-  margin:20px auto;
-  padding: 12px 24px;
-  font-size: 16px;
-  border:none;
-  border-radius:8px;
-  background-color:#28a745;
-  color:white;
-  cursor:pointer;
-  display:block;
-}
 .sort-container{
   text-align:center;
   margin-bottom:16px;
@@ -99,14 +88,14 @@ footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:c
   <div class="sort-container">
     <label for="sortSelect" style="color:white; margin-right:8px;">Sort By:</label>
     <select id="sortSelect">
-      <option value="default">Default</option>
-      <option value="desc" selected>Oldest to Newest</option>
+      <option value="default" selected>Default</option>
+      <option value="desc">Oldest to Newest</option>
       <option value="asc">Newest to Oldest</option>
     </select>
   </div>
 
   <section class="grid" id="image-grid" aria-label="Image grid">
-    <!-- Initial 15 image tiles with data-value -->
+    <!-- Initial 16 image tiles with data-value -->
     <a class="tile" href="#" tabindex="0" data-value="80"><img src="images/big-logo.png" alt="Image 1"><div class="caption">Video 1</div></a>
     <a class="tile" href="#" tabindex="0" data-value="81"><img src="images/img02.jpg" alt="Image 2"><div class="caption">Image 2</div></a>
     <a class="tile" href="#" tabindex="0" data-value="82"><img src="images/img03.jpg" alt="Image 3"><div class="caption">Image 3</div></a>
@@ -125,48 +114,17 @@ footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:c
     <a class="tile" href="#" tabindex="0" data-value="95"><img src="images/img15.jpg" alt="Image 16"><div class="caption">Image 16</div></a>
   </section>
 
-  <button id="load-more">Load More</button>
 </main>
 
 <footer>Replace the <code>src</code> attributes with your image paths (local or remote).</footer>
 
 <script>
 const grid = document.getElementById("image-grid");
-const loadMore = document.getElementById("load-more");
 const sortSelect = document.getElementById("sortSelect");
-
-let nextImage = 16; // next image number
 
 // Save initial order
 Array.from(grid.children).forEach((tile, index)=>{
   tile.dataset.originalOrder = index;
-});
-
-// Load More functionality
-loadMore.addEventListener("click", () => {
-  for (let i = 0; i < 15; i++) {
-    const tile = document.createElement("a");
-    tile.className = "tile";
-    tile.href = "#";
-    tile.tabIndex = 0;
-    tile.dataset.value = nextImage; // assign value for sorting
-    tile.dataset.originalOrder = grid.children.length; // maintain order
-
-    const img = document.createElement("img");
-    img.src = `images/img${String(nextImage).padStart(2,'0')}.jpg`;
-    img.alt = `Image ${nextImage}`;
-
-    const caption = document.createElement("div");
-    caption.className = "caption";
-    caption.textContent = `Image ${nextImage}`;
-
-    tile.appendChild(img);
-    tile.appendChild(caption);
-    grid.appendChild(tile);
-
-    nextImage++;
-  }
-  sortGrid(); // sort new tiles automatically
 });
 
 // Sorting function
@@ -188,9 +146,9 @@ function sortGrid(){
 // Trigger sorting on dropdown change
 sortSelect.addEventListener("change", sortGrid);
 
-// Sort by highest to lowest on page load
+// Default sort: use original order
 window.addEventListener("DOMContentLoaded", ()=> {
-  sortSelect.value = "desc";
+  sortSelect.value = "default";
   sortGrid();
 });
 </script>
