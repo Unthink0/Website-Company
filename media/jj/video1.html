@@ -130,14 +130,46 @@
 
     // Write embedded content
     newWindow.document.write(`
-      <html>
-        <head><title>Embedded Video</title></head>
-        <body style="background:#111; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;">
-          <iframe width="640" height="480" 
-    src="https://1drv.ms/v/c/56a0c4f446943249/IQRJMpRG9MSgIIBWJwwAAAAAAYk1P_hI1YER4mtyaUFOTXo?embed=true" 
-    frameborder="0" allowfullscreen></iframe>
-        </body>
-      </html>
+       <html>
+      <head>
+        <title>Embedded Video</title>
+        <style>
+          body {
+            background: #111;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+          }
+          #video-frame {
+            display: none;
+          }
+          #loading {
+            font-size: 24px;
+          }
+        </style>
+      </head>
+      <body>
+        <div id="loading">Loading, please wait...</div>
+        <iframe id="video-frame" width="640" height="480" 
+          src="https://1drv.ms/v/c/56a0c4f446943249/IQRJMpRG9MSgIIBWJwwAAAAAAYk1P_hI1YER4mtyaUFOTXo?embed=true" 
+          frameborder="0" allowfullscreen>
+        </iframe>
+
+        <script>
+          const iframe = document.getElementById('video-frame');
+          const loading = document.getElementById('loading');
+          // Show iframe once it’s loaded
+          iframe.onload = function() {
+            loading.style.display = 'none';
+            iframe.style.display = 'block';
+          };
+        </script>
+      </body>
+    </html>
     `);
   }
 </script>
