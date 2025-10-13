@@ -20,7 +20,7 @@
     padding: 20px;
   }
   .ad-side {
-    width: 120px; /* adjust to your ad size */
+    width: 120px;
     height: 600px;
     flex-shrink: 0;
     border-radius: 8px;
@@ -77,7 +77,7 @@
     <img src="../images/video-thumbnail.jpg" alt="Video Thumbnail">
 
     <br><br>
-    <a id="download-link" href="javascript:void(0);">
+    <a href="javascript:void(0);">
       <button id="download-button" onclick="openEmbedded()">Download Link in 10 Seconds</button>
     </a>
   </div>
@@ -111,66 +111,37 @@
     } else {
       clearInterval(timer);
       button.textContent = "Download Link";
-      button.classList.add("enabled");
+      button.classList.add("enabled"); // mark as active
     }
   }, 1000);
 
-  // Function to open about:blank and embed video iframe
+  // Function to open about:blank with OneDrive video
   function openEmbedded() {
-    // Only allow if countdown finished
     if (!button.classList.contains("enabled")) return;
 
     // Hide the button
     button.style.display = "none";
 
-    // Open new blank window
+    // Open new window
     const newWindow = window.open('about:blank', '_blank');
 
-    // Write HTML with loading message and iframe
-    newWindow.document.write(`
-      <html>
-        <head>
-          <title>Embedded Video</title>
-          <style>
-            body {
-              background: #111;
-              color: #fff;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              height: 100vh;
-              margin: 0;
-              font-family: Arial, sans-serif;
-              flex-direction: column;
-            }
-            #video-frame {
-              display: none;
-              border-radius: 12px;
-            }
-            #loading {
-              font-size: 24px;
-              margin-bottom: 20px;
-            }
-          </style>
-        </head>
-        <body>
-          <div id="loading">Loading, please wait...</div>
-          <iframe id="video-frame" width="640" height="480" 
-            src="https://1drv.ms/v/c/56a0c4f446943249/IQRJMpRG9MSgIIBWJwwAAAAAAYk1P_hI1YER4mtyaUFOTXo?embed=true" 
-            frameborder="0" allowfullscreen>
-          </iframe>
-
-          <script>
-            const iframe = document.getElementById('video-frame');
-            const loading = document.getElementById('loading');
-            iframe.onload = function() {
-              loading.style.display = 'none';
-              iframe.style.display = 'block';
-            };
-          </script>
-        </body>
-      </html>
-    `);
+    // Write the HTML into the new window
+    newWindow.document.write(
+      '<!DOCTYPE html>' +
+      '<html lang="en">' +
+      '<head><meta charset="UTF-8"><title>Embedded Video</title></head>' +
+      '<body style="background:#111; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; flex-direction:column; color:#fff; font-family:Arial,sans-serif;">' +
+      '<div id="loading" style="font-size:24px; margin-bottom:20px;">Loading, please wait...</div>' +
+      '<iframe id="video-frame" width="640" height="480" ' +
+      'src="https://1drv.ms/v/c/56a0c4f446943249/IQRJMpRG9MSgIIBWJwwAAAAAAYk1P_hI1YER4mtyaUFOTXo?embed=true" ' +
+      'frameborder="0" allowfullscreen style="display:none; border-radius:12px;"></iframe>' +
+      '<script>' +
+      'const iframe=document.getElementById("video-frame");' +
+      'const loading=document.getElementById("loading");' +
+      'iframe.onload=function(){loading.style.display="none"; iframe.style.display="block";};' +
+      '<\/script>' +
+      '</body></html>'
+    );
   }
 </script>
 
