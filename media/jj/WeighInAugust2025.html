@@ -24,6 +24,7 @@
     height: 600px;
     flex-shrink: 0;
     border-radius: 8px;
+    background: #222; /* blank placeholder */
   }
   .content {
     max-width: 800px;
@@ -54,24 +55,14 @@
     color: #ff5555;
   }
 </style>
-
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1618051327366664"
-     crossorigin="anonymous"></script>
-
 </head>
 <body>
 
 <div class="container">
-  <div class="ad-side">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-1618051327366664"
-         data-ad-slot="1767244011"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
+  <!-- Left placeholder -->
+  <div class="ad-side"></div>
 
+  <!-- Main Content -->
   <div class="content">
     <h1 id="video-title">Weigh In August 2025</h1>
     <img src="https://imagecdn.clips4sale.com/accounts99/135731/clip_images/previewlg_31780923.jpg" alt="Video Thumbnail">
@@ -85,19 +76,12 @@
     <div id="reload-text"></div>
   </div>
 
-  <div class="ad-side">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-1618051327366664"
-         data-ad-slot="1767244011"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
+  <!-- Right placeholder -->
+  <div class="ad-side"></div>
 </div>
 
 <script>
-  alert("Please click an ad to support us before downloading!");
+  alert("Please consider to donate before downloading!");
 
   let countdown = 10;
   const button = document.getElementById("download-button");
@@ -117,11 +101,9 @@
   function openEmbedded() {
     if (!button.classList.contains("enabled")) return;
 
-    // Hide button and show reload text
     button.style.display = "none";
     reloadText.textContent = "Reload Page To Get New Download Link";
 
-    // Open new window
     const newWindow = window.open('about:blank', '_blank');
     newWindow.document.write(
       '<!DOCTYPE html>' +
