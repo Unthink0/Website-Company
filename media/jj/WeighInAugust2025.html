@@ -99,10 +99,10 @@
     const timer = setInterval(() => {
       countdown--;
       if (countdown > 0) {
-        button.textContent = `Video Link in ${countdown} Seconds`;
+        button.textContent = `Get Video Link in ${countdown} Seconds`;
       } else {
         clearInterval(timer);
-        button.textContent = "Download Link";
+        button.textContent = "Video Link";
         button.classList.add("enabled");
       }
     }, 1000);
