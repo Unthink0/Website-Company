@@ -148,6 +148,15 @@ muteBtn.addEventListener("click", () => {
   video.muted = !video.muted;
   muteBtn.textContent = video.muted ? "🔇" : "🔊";
 });
+
+  const video = document.getElementById("vjs_video_11698_html5_api");
+video.addEventListener("click", () => {
+  if (video.paused) {
+    video.play();
+  } else {
+    video.pause();
+  }
+});
   
   function openEmbedded() {
     if (!button.classList.contains("enabled")) return;
