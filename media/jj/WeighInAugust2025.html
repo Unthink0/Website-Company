@@ -62,6 +62,25 @@
   a.custom-link:hover {
     text-decoration: underline; /* Underline on hover */
   }
+
+  .mute-btn {
+  position: absolute;
+  top: 28px;
+  right: 12px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.mute-btn:hover {
+  background: rgba(0,0,0,0.8);
+}
+  
 </style>
 </head>
 <body>
@@ -74,7 +93,13 @@
   <!-- Main Content -->
   <div class="content">
     <h1 id="video-title">Weigh In August 2025</h1>
-    <img src="https://imagecdn.clips4sale.com/accounts99/135731/clip_images/previewlg_31780923.jpg" alt="Video Thumbnail">
+    <div class="video-wrapper">
+  <video id="preview-video" playsinline preload="metadata" loop muted autoplay
+    poster="https://imagecdn.clips4sale.com/accounts99/135731/clip_images/previewlg_31780923.jpg"
+    src="https://imagecdn.clips4sale.com/accounts99/135731/clips_previews/prev_31780923.mp4">
+  </video>
+  <button id="mute-toggle" class="mute-btn">🔇</button>
+</div>
     <h2>8-28-2025 | 11 min | 1080p | <a href="/media/jj" target="_self" class="custom-link">Juicy Jackie</a></h2>
     <p>It's that time again! Did my weight go up, stay the same? Watch me talk about my body, it's changes, how good my fat feels, and find out exactly what I weigh!</p>
 
@@ -107,6 +132,14 @@
       }
     }, 1000);
   }, 1000); // 1000ms = 1 second
+
+  const video = document.getElementById("preview-video");
+const muteBtn = document.getElementById("mute-toggle");
+
+muteBtn.addEventListener("click", () => {
+  video.muted = !video.muted;
+  muteBtn.textContent = video.muted ? "🔇" : "🔊";
+});
 
   function openEmbedded() {
     if (!button.classList.contains("enabled")) return;
