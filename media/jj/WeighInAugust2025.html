@@ -59,11 +59,9 @@
     color: inherit;           /* Matches parent text color */
     text-decoration: none;    /* No underline by default */
   }
-
   a.custom-link:hover {
     text-decoration: underline; /* Underline on hover */
   }
-</style>
 </style>
 </head>
 <body>
@@ -92,22 +90,23 @@
 </div>
 
 <script>
-  alert("Consider Donating to keep this possible!");
-
   let countdown = 10;
   const button = document.getElementById("download-button");
   const reloadText = document.getElementById("reload-text");
 
-  const timer = setInterval(() => {
-    countdown--;
-    if (countdown > 0) {
-      button.textContent = `Download Link in ${countdown} Seconds`;
-    } else {
-      clearInterval(timer);
-      button.textContent = "Download Link";
-      button.classList.add("enabled");
-    }
-  }, 1000);
+  // Start the countdown after a 2-second delay
+  setTimeout(() => {
+    const timer = setInterval(() => {
+      countdown--;
+      if (countdown > 0) {
+        button.textContent = `Download Link in ${countdown} Seconds`;
+      } else {
+        clearInterval(timer);
+        button.textContent = "Download Link";
+        button.classList.add("enabled");
+      }
+    }, 1000);
+  }, 2000); // 2000ms = 2 seconds
 
   function openEmbedded() {
     if (!button.classList.contains("enabled")) return;
