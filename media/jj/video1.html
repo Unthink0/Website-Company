@@ -51,7 +51,8 @@
 </style>
 
 <!-- AdSense script -->
-<script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1618051327366664"
+     crossorigin="anonymous"></script>
 
 </head>
 <body>
@@ -102,7 +103,6 @@
   // Countdown timer
   let countdown = 10;
   const button = document.getElementById("download-button");
-  const link = document.getElementById("download-link");
 
   const timer = setInterval(() => {
     countdown--;
@@ -112,76 +112,67 @@
       clearInterval(timer);
       button.textContent = "Download Link";
       button.classList.add("enabled");
-      // Enable button click
-      button.disabled = false;
     }
   }, 1000);
 
-  // Function to open about:blank and embed image/video
+  // Function to open about:blank and embed video iframe
   function openEmbedded() {
-    // Only run if countdown finished
+    // Only allow if countdown finished
     if (!button.classList.contains("enabled")) return;
 
     // Hide the button
     button.style.display = "none";
 
-    // Open new about:blank window
+    // Open new blank window
     const newWindow = window.open('about:blank', '_blank');
 
-    // Write embedded content
+    // Write HTML with loading message and iframe
     newWindow.document.write(`
-       <html>
-      <head>
-        <title>Embedded Video</title>
-        <style>
-          body {
-            background: #111;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-          }
-          #video-frame {
-            display: none;
-          }
-          #loading {
-            font-size: 24px;
-          }
-        </style>
-      </head>
-      <body>
-        <div id="loading">Loading, please wait...</div>
-        <iframe id="video-frame" width="640" height="480" 
-          src="https://1drv.ms/v/c/56a0c4f446943249/IQRJMpRG9MSgIIBWJwwAAAAAAYk1P_hI1YER4mtyaUFOTXo?embed=true" 
-          frameborder="0" allowfullscreen>
-        </iframe>
+      <html>
+        <head>
+          <title>Embedded Video</title>
+          <style>
+            body {
+              background: #111;
+              color: #fff;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+              margin: 0;
+              font-family: Arial, sans-serif;
+              flex-direction: column;
+            }
+            #video-frame {
+              display: none;
+              border-radius: 12px;
+            }
+            #loading {
+              font-size: 24px;
+              margin-bottom: 20px;
+            }
+          </style>
+        </head>
+        <body>
+          <div id="loading">Loading, please wait...</div>
+          <iframe id="video-frame" width="640" height="480" 
+            src="https://1drv.ms/v/c/56a0c4f446943249/IQRJMpRG9MSgIIBWJwwAAAAAAYk1P_hI1YER4mtyaUFOTXo?embed=true" 
+            frameborder="0" allowfullscreen>
+          </iframe>
 
-        <script>
-          const iframe = document.getElementById('video-frame');
-          const loading = document.getElementById('loading');
-          // Show iframe once it’s loaded
-          iframe.onload = function() {
-            loading.style.display = 'none';
-            iframe.style.display = 'block';
-          };
-        </script>
-      </body>
-    </html>
+          <script>
+            const iframe = document.getElementById('video-frame');
+            const loading = document.getElementById('loading');
+            iframe.onload = function() {
+              loading.style.display = 'none';
+              iframe.style.display = 'block';
+            };
+          </script>
+        </body>
+      </html>
     `);
   }
 </script>
-
-  <amp-ad width="100vw" height="320"
-     type="adsense"
-     data-ad-client="ca-pub-1618051327366664"
-     data-ad-slot="1767244011"
-     data-auto-format="rspv"
-     data-full-width="">
-  <div overflow=""></div>
-</amp-ad>
 
 </body>
 </html>
