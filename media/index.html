@@ -27,7 +27,7 @@
 
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1rem;
       padding: 2rem;
     }
@@ -38,14 +38,18 @@
       overflow: hidden;
       box-shadow: 0 2px 10px rgba(0,0,0,0.4);
       transition: transform 0.2s ease;
+      text-decoration: none;
+      color: inherit;
     }
 
     .media-item:hover {
       transform: scale(1.03);
     }
 
-    img, video, audio {
+    .media-item img {
       width: 100%;
+      height: 200px;
+      object-fit: cover;
       display: block;
       border-radius: 12px 12px 0 0;
     }
@@ -56,6 +60,8 @@
 
     .media-info h3 {
       margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+      color: #fff;
     }
 
     .media-info p {
@@ -71,38 +77,32 @@
   </header>
 
   <div class="gallery">
-    <!-- Image example -->
-    <div class="media-item">
-      <img href="/jj" src="https://imagecdn.clips4sale.com/accounts99/135731/clip_images/square_sm_31780837.jpg" alt="Sample Image">
+    <!-- Image 1 -->
+    <a href="https://example.com/page1" class="media-item" target="_blank">
+      <img src="https://imagecdn.clips4sale.com/accounts99/135731/clip_images/square_sm_31780837.jpg" alt="Sample Image 1">
       <div class="media-info">
-        <h3>Sample Image</h3>
-        <p>Description of the image goes here.</p>
+        <h3>Sample Image 1</h3>
+        <p>Click to view more.</p>
       </div>
-    </div>
+    </a>
 
-    <!-- Video example -->
-    <div class="media-item">
-      <video controls>
-        <source src="sample-video.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
+    <!-- Image 2 -->
+    <a href="https://example.com/page2" class="media-item" target="_blank">
+      <img src="https://via.placeholder.com/400x250/ff5555/ffffff?text=Image+2" alt="Sample Image 2">
       <div class="media-info">
-        <h3>Sample Video</h3>
-        <p>A short demo video clip.</p>
+        <h3>Sample Image 2</h3>
+        <p>Click to view more.</p>
       </div>
-    </div>
+    </a>
 
-    <!-- Audio example -->
-    <div class="media-item">
-      <audio controls>
-        <source src="sample-audio.mp3" type="audio/mpeg">
-        Your browser does not support the audio tag.
-      </audio>
+    <!-- Image 3 -->
+    <a href="https://example.com/page3" class="media-item" target="_blank">
+      <img src="https://via.placeholder.com/400x250/55aaff/ffffff?text=Image+3" alt="Sample Image 3">
       <div class="media-info">
-        <h3>Sample Audio</h3>
-        <p>Background track or podcast.</p>
+        <h3>Sample Image 3</h3>
+        <p>Click to view more.</p>
       </div>
-    </div>
+    </a>
   </div>
 </body>
 </html>
