@@ -94,19 +94,19 @@
   const button = document.getElementById("download-button");
   const reloadText = document.getElementById("reload-text");
 
-  // Start the countdown after a 2-second delay
+  // Start the countdown after a X-second delay
   setTimeout(() => {
     const timer = setInterval(() => {
       countdown--;
       if (countdown > 0) {
-        button.textContent = `Download Link in ${countdown} Seconds`;
+        button.textContent = `Video Link in ${countdown} Seconds`;
       } else {
         clearInterval(timer);
         button.textContent = "Download Link";
         button.classList.add("enabled");
       }
     }, 1000);
-  }, 1000); // 2000ms = 2 seconds
+  }, 1000); // 1000ms = 1 second
 
   function openEmbedded() {
     if (!button.classList.contains("enabled")) return;
