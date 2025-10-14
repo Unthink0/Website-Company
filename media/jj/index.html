@@ -76,11 +76,54 @@ footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:c
   border-radius:6px;
   font-size:16px;
 }
+  .subcategory {
+  color: #ff5fa2;
+  font-size: 1rem;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+
+.model-profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  background: var(--panel);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+  margin-bottom: 30px;
+}
+
+.model-photo {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.model-description {
+  max-width: 600px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
 </style>
 </head>
 <body>
 <header>
   <h1>Juicy Jackie</h1>
+    <p class="subcategory">Photo Gallery</p>
+
+  <div class="model-profile">
+    <img src="https://imagecdn.clips4sale.com/accounts99/135731/clip_images/previewlg_31780923.jpg" alt="Juicy Jackie Profile" class="model-photo">
+    <div class="model-description">
+      <p>Juicy Jackie is a confident and bubbly model known for her vibrant personality and expressive shoots. Her collection showcases both her playful and artistic sides through stunning photography.</p>
+    </div>
+  </div>
 </header>
 
 <main class="wrap" role="main" aria-label="Media gallery">
