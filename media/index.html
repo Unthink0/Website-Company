@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Model Categories</title>
-  <link rel="icon" type="image/x-icon" href="/images/logo.ico" />
+  <link rel="icon" type="image/x-icon" href="/images/logo.ico">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -18,7 +18,7 @@
       text-align: center;
       padding: 2rem 1rem;
       background: #1a1a1a;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
 
     header h1 {
@@ -28,36 +28,43 @@
 
     .sort-container {
       text-align: center;
-      margin-top: 1.5rem;
-      margin-bottom: -1rem;
+      margin: 1.5rem 0;
     }
 
     select {
-      background: #1c1c1c;
+      background-color: #1a1a1a;
       color: #f0f0f0;
-      border: 1px solid #333;
-      border-radius: 6px;
-      padding: 0.4rem 0.8rem;
+      border: 1px solid #444;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
       font-size: 1rem;
+      outline: none;
       cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    select:hover {
+      background-color: #2a2a2a;
     }
 
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
       padding: 2rem;
+      justify-items: center;
     }
 
     .media-item {
       background: #1c1c1c;
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
       transition: transform 0.2s ease;
       text-decoration: none;
       color: inherit;
-      display: block;
+      width: 100%;
+      max-width: 220px;
     }
 
     .media-item:hover {
@@ -66,14 +73,15 @@
 
     .media-item img {
       width: 100%;
-      height: 160px;
+      height: 150px;
       object-fit: cover;
       display: block;
       border-radius: 12px 12px 0 0;
     }
 
     .media-info {
-      padding: 0.8rem 1rem 1rem;
+      padding: 0.75rem;
+      text-align: center;
     }
 
     .media-info h3 {
@@ -94,18 +102,19 @@
     <h1>Model Categories</h1>
   </header>
 
-  <!-- Sort control 
+  <!-- Sort Options 
   <div class="sort-container">
-    <label for="sort">Sort By:</label>
+    <label for="sort">Sort by:</label>
     <select id="sort">
       <option value="default">Default</option>
-      <option value="az">A to Z</option>
-      <option value="za">Z to A</option>
+      <option value="atoz">A to Z</option>
+      <option value="ztoa">Z to A</option>
     </select>
   </div> -->
 
   <div class="gallery" id="gallery">
-    <a href="ssbbw" class="media-item" data-value="1">
+    <!-- Example Item -->
+    <a href="ssbbw" class="media-item" data-order="1">
       <img src="https://bbw-chan.link/.media/2434122fc971c72720427ed982664955b023045769f791ece15fd094407a9ecb.jpg" alt="Ssbbw">
       <div class="media-info">
         <h3>Ssbbw</h3>
@@ -113,53 +122,50 @@
       </div>
     </a>
 
-  <!--  <a href="https://example.com/page2" class="media-item" data-value="2">
-      <img src="https://via.placeholder.com/400x250/ff5555/ffffff?text=BBW" alt="Bbw">
+    <!-- Example Item 2 
+    <a href="#" class="media-item" data-order="2">
+      <img src="https://via.placeholder.com/300x200/ff5555/ffffff?text=Model+2" alt="Model 2">
       <div class="media-info">
         <h3>Bbw</h3>
-        <p>250lbs+</p>
+        <p>350lbs+</p>
       </div>
-    </a>
+    </a> -->
 
-    <a href="https://example.com/page3" class="media-item" data-value="3">
-      <img src="https://via.placeholder.com/400x250/55aaff/ffffff?text=Thick" alt="Thick">
+    <!-- Example Item 3 
+    <a href="#" class="media-item" data-order="3">
+      <img src="https://via.placeholder.com/300x200/55aaff/ffffff?text=Model+3" alt="Model 3">
       <div class="media-info">
-        <h3>Thick</h3>
-        <p>200lbs+</p>
+        <h3>Bella Honey</h3>
+        <p>350lbs+</p>
       </div>
     </a>
   </div> -->
 
   <script>
-    const sortSelect = document.getElementById("sort");
-    const gallery = document.getElementById("gallery");
+    const sortSelect = document.getElementById('sort');
+    const gallery = document.getElementById('gallery');
 
-    function sortGallery() {
-      const items = Array.from(gallery.children);
-      const sortType = sortSelect.value;
+    sortSelect.addEventListener('change', () => {
+      const items = Array.from(gallery.querySelectorAll('.media-item'));
+      let sorted;
 
-      if (sortType === "az") {
-        items.sort((a, b) =>
-          a.querySelector("h3").textContent.localeCompare(b.querySelector("h3").textContent)
+      if (sortSelect.value === 'atoz') {
+        sorted = items.sort((a, b) =>
+          a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent)
         );
-      } else if (sortType === "za") {
-        items.sort((a, b) =>
-          b.querySelector("h3").textContent.localeCompare(a.querySelector("h3").textContent)
+      } else if (sortSelect.value === 'ztoa') {
+        sorted = items.sort((a, b) =>
+          b.querySelector('h3').textContent.localeCompare(a.querySelector('h3').textContent)
         );
       } else {
-        // Default sort by numeric data-value
-        items.sort(
-          (a, b) => parseInt(a.getAttribute("data-value")) - parseInt(b.getAttribute("data-value"))
+        sorted = items.sort((a, b) =>
+          parseInt(a.dataset.order) - parseInt(b.dataset.order)
         );
       }
 
-      gallery.innerHTML = "";
-      items.forEach((item) => gallery.appendChild(item));
-    }
-
-    // Sort on load by data-value
-    window.addEventListener("DOMContentLoaded", sortGallery);
-    sortSelect.addEventListener("change", sortGallery);
+      gallery.innerHTML = '';
+      sorted.forEach(item => gallery.appendChild(item));
+    });
   </script>
 </body>
 </html>
