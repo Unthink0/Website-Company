@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donate | Unthink Design</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
+  <style>
+    :root {
+      --bg: #fff;
+      --text: #111;
+      --accent: #007aff;
+      --border: #e6e6e6;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      line-height: 1.7;
+    }
+
+    header {
+      text-align: center;
+      padding: 5rem 1rem 3rem;
+      background: #f9f9f9;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      max-width: 600px;
+      margin: 0 auto;
+      color: #555;
+    }
+
+    section {
+      max-width: 900px;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .platforms {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      padding: 2rem;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      text-align: center;
+      background: #fff;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .card img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+    }
+
+    .donate-button {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .donate-button:hover {
+      opacity: 0.85;
+    }
+
+    .faq {
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+      padding-top: 2rem;
+    }
+
+    .faq-item {
+      margin-bottom: 1.5rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #f9f9f9;
+      border-top: 1px solid var(--border);
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111;
+        --text: #f5f5f5;
+        --border: #333;
+      }
+      header, footer {
+        background: #1a1a1a;
+      }
+      .card {
+        background: #1b1b1b;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Support Our Site</h1>
+    <p>Every contribution helps us continue to keep this site up and running for your enjoyment.</p>
+  </header>
+
+ <!-- <section>
+    <h2>Why Donate?</h2>
+    <p>Your donations empower us to fund creative initiatives, support local designers, and expand our educational programs. Together, we can push design thinking forward.</p>
+  </section> -->
+
+  <section>
+    <h2>Choose a Donation Platform</h2>
+    <div class="platforms">
+      <div class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/2048px-Bitcoin.svg.png" alt="Crypto Logo">
+        <h3>Crypto</h3>
+        <p>Donate securely with Bitcoin, Ethereum, USDC, ETC..</p>
+        <a href="#" class="donate-button">Donate with Crypto</a>
+      </div>
+      <div class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Square_Cash_app_logo.svg/1200px-Square_Cash_app_logo.svg.png" alt="Cash App Logo">
+        <h3>Cash App</h3>
+        <p>Send your donation instantly with Cash App.<br> <br></p>
+        <a href="#" class="donate-button">Donate with Cash App</a>
+      </div>
+      <div class="card">
+        <img src="https://cdn-icons-png.flaticon.com/512/6963/6963703.png" alt="Card Logo">
+        <h3>Debit/Cedit Card</h3>
+        <p>Contribute directly via Credit/Debit Card.</p>
+        <a href="#" class="donate-button">Donate with Cedit/Debit Card</a>
+      </div>
+      <div class="card">
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968601.png" alt="Apple Pay Logo">
+        <h3>Apple Pay</h3>
+        <p>Send your donation via Apple Pay</p>
+        <a href="#" class="donate-button">Donate with Apple Pay</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- <section>
+    <h2>FAQ</h2>
+    <div class="faq">
+      <div class="faq-item">
+        <strong></strong>
+        <p>Yes, we are a registered 501(c)(3). You’ll receive a receipt after donating.</p>
+      </div>
+      <div class="faq-item">
+        <strong>Can I donate monthly?</strong>
+        <p>Absolutely! Choose a recurring option when you donate.</p>
+      </div>
+      <div class="faq-item">
+        <strong>How do I know where my donation goes?</strong>
+        <p>We send quarterly transparency updates showing real project impact.</p>
+      </div>
+    </div>
+  </section> -->
+
+  <footer>
+    All rights reserved.
+  </footer>
+
+</body>
+</html>
+
