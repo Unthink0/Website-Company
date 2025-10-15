@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cash App Donation</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+  <style>
+    :root {
+      --bg: #fff;
+      --text: #111;
+      --accent: #007aff;
+      --border: #e6e6e6;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    img.qr {
+      width: 288px;
+      height: 288px;
+      border-radius: 12px;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+    }
+
+    .cash-tag {
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: #00CF31;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+
+    p.note {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 1rem;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .button:hover {
+      opacity: 0.85;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 3rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111;
+        --text: #f5f5f5;
+        --border: #333;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      p.note {
+        color: #bbb;
+      }
+
+      footer {
+        color: #777;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Cash App Donation</h1>
+
+  <img 
+    src="https://cash.app/qr/$delgadoev?size=288&margin=0&bg=000000&logoColor=ffffff" 
+    alt="Cash App QR Code" 
+    class="qr">
+
+  <div class="cash-tag">$delgadoev</div>
+
+  <p class="note">Scan to donate — click below once you’re done.</p>
+
+  <a href="completed" class="button">Complete</a>
+
+  <footer>
+ All rights reserved.
+  </footer>
+
+</body>
+</html>
