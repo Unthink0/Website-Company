@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting to Donation Page...</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f9f9f9;
+      color: #333;
+      flex-direction: column;
+      text-align: center;
+      transition: opacity 0.5s ease;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: #666;
+      margin-bottom: 2rem;
+    }
+
+    a {
+      color: #007aff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #111;
+        color: #f5f5f5;
+      }
+      p {
+        color: #aaa;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Opening Donation Page using Square...</h1>
+  <p>If it doesn’t open automatically, <a href="https://square.link/u/HuFYIGQQ" target="_blank">click here</a> to continue.</p>
+
+  <script>
+    // Automatically open donation page in a new tab
+    setTimeout(() => {
+      window.open("https://square.link/u/HuFYIGQQ", "_blank");
+    }, 800);
+
+    // Optional: fade out this tab and close it after opening
+    setTimeout(() => {
+      document.body.style.opacity = "0";
+      setTimeout(() => window.close(), 1000);
+    }, 2500);
+  </script>
+
+</body>
+</html>
