@@ -26,27 +26,6 @@
       font-size: 2rem;
     }
 
-    .sort-container {
-      text-align: center;
-      margin: 1.5rem 0;
-    }
-
-    select {
-      background-color: #1a1a1a;
-      color: #f0f0f0;
-      border: 1px solid #444;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      font-size: 1rem;
-      outline: none;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    select:hover {
-      background-color: #2a2a2a;
-    }
-
     .gallery {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -95,6 +74,65 @@
       font-size: 0.85rem;
       color: #ccc;
     }
+
+    /* ---- Floating Donate Popup ---- */
+    .donate-popup {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background-color: #007aff;
+      color: #fff;
+      padding: 0.9rem 1.5rem;
+      border-radius: 30px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideIn 1s ease forwards 1.5s;
+      transition: background 0.3s;
+      z-index: 1000;
+    }
+
+    .donate-popup:hover {
+      background-color: #0091ff;
+    }
+
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ---- Footer ---- */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: #1a1a1a;
+      margin-top: 3rem;
+      border-top: 1px solid #222;
+    }
+
+    footer p {
+      color: #aaa;
+      margin-bottom: 1rem;
+    }
+
+    footer .donate-btn {
+      background-color: #007aff;
+      color: #fff;
+      padding: 0.8rem 1.6rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    footer .donate-btn:hover {
+      background-color: #0091ff;
+    }
   </style>
 </head>
 <body>
@@ -102,18 +140,7 @@
     <h1>Model Categories</h1>
   </header>
 
-  <!-- Sort Options 
-  <div class="sort-container">
-    <label for="sort">Sort by:</label>
-    <select id="sort">
-      <option value="default">Default</option>
-      <option value="atoz">A to Z</option>
-      <option value="ztoa">Z to A</option>
-    </select>
-  </div> -->
-
   <div class="gallery" id="gallery">
-    <!-- Example Item -->
     <a href="ssbbw" class="media-item" data-order="1">
       <img src="https://bbw-chan.link/.media/2434122fc971c72720427ed982664955b023045769f791ece15fd094407a9ecb.jpg" alt="Ssbbw">
       <div class="media-info">
@@ -121,51 +148,15 @@
         <p>350lbs+</p>
       </div>
     </a>
+  </div>
 
-    <!-- Example Item 2 
-    <a href="#" class="media-item" data-order="2">
-      <img src="https://via.placeholder.com/300x200/ff5555/ffffff?text=Model+2" alt="Model 2">
-      <div class="media-info">
-        <h3>Bbw</h3>
-        <p>350lbs+</p>
-      </div>
-    </a> -->
+  <!-- Floating Donate Popup -->
+  <a href="donate" target="_blank" class="donate-popup">Donate Now!</a>
 
-    <!-- Example Item 3 
-    <a href="#" class="media-item" data-order="3">
-      <img src="https://via.placeholder.com/300x200/55aaff/ffffff?text=Model+3" alt="Model 3">
-      <div class="media-info">
-        <h3>Bella Honey</h3>
-        <p>350lbs+</p>
-      </div>
-    </a>
-  </div> -->
+  <!-- Footer -->
+  <footer>
+    <a href="donate" target="_blank" class="donate-btn">Donate</a>
+  </footer>
 
-  <script>
-    const sortSelect = document.getElementById('sort');
-    const gallery = document.getElementById('gallery');
-
-    sortSelect.addEventListener('change', () => {
-      const items = Array.from(gallery.querySelectorAll('.media-item'));
-      let sorted;
-
-      if (sortSelect.value === 'atoz') {
-        sorted = items.sort((a, b) =>
-          a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent)
-        );
-      } else if (sortSelect.value === 'ztoa') {
-        sorted = items.sort((a, b) =>
-          b.querySelector('h3').textContent.localeCompare(a.querySelector('h3').textContent)
-        );
-      } else {
-        sorted = items.sort((a, b) =>
-          parseInt(a.dataset.order) - parseInt(b.dataset.order)
-        );
-      }
-
-      gallery.innerHTML = '';
-      sorted.forEach(item => gallery.appendChild(item));
-    });
-  </script>
 </body>
 </html>
