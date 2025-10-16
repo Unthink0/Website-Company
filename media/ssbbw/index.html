@@ -31,6 +31,38 @@ header h1{margin:0;font-size:2rem;color:#fff;letter-spacing:0.2px;}
       text-align: center;
       margin: 1.5rem 0;
     }
+    
+     /* ---- Floating Donate Popup ---- */
+    .donate-popup {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background-color: #007aff;
+      color: #fff;
+      padding: 0.9rem 1.5rem;
+      border-radius: 30px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideIn 1s ease forwards 1.5s;
+      transition: background 0.3s;
+      z-index: 1000;
+    }
+
+    .donate-popup:hover {
+      background-color: #0091ff;
+    }
+
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
 
     select {
       background-color: #1a1a1a;
@@ -154,6 +186,9 @@ header h1{margin:0;font-size:2rem;color:#fff;letter-spacing:0.2px;}
       </div>
     </a>
   </div> -->
+  
+    <!-- Floating Donate Popup -->
+  <a href="https://nowpayments.io/donation/unthinkdesign" target="_blank" class="donate-popup">Donate Now!</a>
 
   <script>
     const sortSelect = document.getElementById('sort');
