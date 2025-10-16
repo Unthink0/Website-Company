@@ -35,6 +35,38 @@ header h1{margin:0;font-size:1.375rem;color:#fff;letter-spacing:0.2px;}
   width:min(1280px, 96%);
   margin:28px auto;
 }
+
+/* ---- Floating Donate Popup ---- */
+    .donate-popup {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background-color: #007aff;
+      color: #fff;
+      padding: 0.9rem 1.5rem;
+      border-radius: 30px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideIn 1s ease forwards 1.5s;
+      transition: background 0.3s;
+      z-index: 1000;
+    }
+
+    .donate-popup:hover {
+      background-color: #0091ff;
+    }
+
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
 .grid{
   display:grid;
   grid-template-columns: repeat(5, 1fr);
@@ -175,6 +207,11 @@ footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:c
   </section>
 
 </main>
+
+  <!-- Floating Donate Popup -->
+  <a href="media/donate" target="_blank" class="donate-popup">Donate Now!</a>
+  
+  <a href="media/donate" target="_blank" class="footer">💙 Donate Now</a>
 
 <footer>We do <code>NOT</code> host the videos on our servers.</footer>
 
