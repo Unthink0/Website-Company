@@ -176,14 +176,23 @@ footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:c
 <main class="wrap" role="main" aria-label="Media gallery">
 
   <!-- Sort By -->
-  <div class="sort-container">
-    <label for="sortSelect" style="color:white; margin-right:8px;">Sort By:</label>
-    <select id="sortSelect">
+ <div class="sort-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+  <!-- Sort dropdown on the left -->
+  <div style="display: flex; align-items: center;">
+    <label for="sortSelect" style="color: white; margin-right: 8px;">Sort By:</label>
+    <select id="sortSelect" style="background: #111; color: white; border: 1px solid #444; border-radius: 6px; padding: 6px 12px; font-size: 16px;">
       <option value="default" selected>Default (Newest to Oldest)</option>
       <option value="desc">Oldest to Newest</option>
-    <!-- <option value="asc">Newest to Oldest</option> -->
     </select>
   </div>
+
+  <!-- Video counter on the right -->
+  <div id="video-counter" style="color: #fff; font-size: 1rem;">
+    Total Videos: <span id="counter-value">0</span>
+  </div>
+</div>
+
+
 
   <section class="grid" id="image-grid" aria-label="Image grid">
     <!-- Initial 16 image tiles with data-value -->
@@ -223,6 +232,20 @@ const sortSelect = document.getElementById("sortSelect");
 Array.from(grid.children).forEach((tile, index)=>{
   tile.dataset.originalOrder = index;
 });
+
+// Update the video counter
+function updateVideoCounter() {
+  const totalVideos = document.querySelectorAll('#image-grid .tile').length;
+  document.getElementById("counter-value").textContent = totalVideos;
+}
+
+// Run on page load
+window.addEventListener("DOMContentLoaded", () => {
+  sortSelect.value = "default";
+  sortGrid();
+  updateVideoCounter(); // update the counter after sorting
+});
+
 
 // Sorting function
 function sortGrid(){
