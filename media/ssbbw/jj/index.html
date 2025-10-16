@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -99,15 +99,66 @@ header h1{margin:0;font-size:1.375rem;color:#fff;letter-spacing:0.2px;}
 @media (max-width:860px){ .grid{ grid-template-columns: repeat(3, 1fr); } }
 @media (max-width:560px){ .grid{ grid-template-columns: repeat(2, 1fr); } .tile img{ height:120px; } }
 footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:center; }
-.sort-container{
-  text-align:center;
-  margin-bottom:16px;
+/* Mobile-friendly top controls */
+.sort-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto 16px;
 }
-.sort-container select{
-  padding:6px 12px;
-  border-radius:6px;
-  font-size:16px;
+
+.sort-controls .control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 200px;
 }
+
+.sort-controls label {
+  color: #fff;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.sort-controls select,
+.sort-controls input {
+  background: #111;
+  color: white;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 16px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.sort-controls #video-counter {
+  color: #fff;
+  font-size: 1rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* --- Responsive layout --- */
+@media (max-width: 700px) {
+  .sort-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .sort-controls .control {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .sort-controls #video-counter {
+    text-align: left;
+  }
+}
+
   .subcategory {
   color: #ff5fa2;
   font-size: 1rem;
@@ -175,20 +226,31 @@ footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:c
 
 <main class="wrap" role="main" aria-label="Media gallery">
 
-  <!-- Sort By -->
- <div class="sort-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-  <!-- Sort dropdown on the left -->
-  <div style="display: flex; align-items: center;">
-    <label for="sortSelect" style="color: white; margin-right: 8px;">Sort By:</label>
-    <select id="sortSelect" style="background: #111; color: white; border: 1px solid #444; border-radius: 6px; padding: 6px 12px; font-size: 16px;">
+  <div class="sort-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+
+  <!-- Top Controls: Sort + Search + Counter -->
+<div class="sort-controls">
+  <!-- Sort dropdown -->
+  <div class="control sort-control">
+    <label for="sortSelect">Sort By:</label>
+    <select id="sortSelect">
       <option value="default" selected>Default (Newest to Oldest)</option>
       <option value="desc">Oldest to Newest</option>
     </select>
   </div>
 
-  <!-- Video counter on the right -->
-  <div id="video-counter" style="color: #fff; font-size: 1rem;">
-    Total Videos: <span id="counter-value">0</span>
+  <!-- Search bar -->
+  <div class="control search-control">
+    <input 
+      type="text" 
+      id="searchInput" 
+      placeholder="Search videos..."
+    />
+  </div>
+
+  <!-- Video counter -->
+  <div class="control counter-control">
+    <span id="video-counter">Total Videos: <span id="counter-value">0</span></span>
   </div>
 </div>
 
@@ -244,6 +306,20 @@ window.addEventListener("DOMContentLoaded", () => {
   sortSelect.value = "default";
   sortGrid();
   updateVideoCounter(); // update the counter after sorting
+});
+
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("input", () => {
+  const query = searchInput.value.toLowerCase();
+  const tiles = document.querySelectorAll('#image-grid .tile');
+
+  tiles.forEach(tile => {
+    const caption = tile.querySelector('.caption').textContent.toLowerCase();
+    tile.style.display = caption.includes(query) ? "block" : "none";
+  });
+
+  updateVideoCounter(); // update the counter to reflect search results
 });
 
 
