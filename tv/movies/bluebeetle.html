@@ -1,1 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blue Beetle</title>
+<link rel="icon" type="image/x-icon" href="/images/logo.ico">
+<style>
+  body {
+    background: #111;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+  }
+  .ad-side {
+    width: 120px;
+    height: 600px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: #222;
+  }
+  .content {
+    max-width: 800px;
+    text-align: center;
+  }
+  img {
+    max-width: 100%;
+    border-radius: 12px;
+    margin: 20px 0;
+  }
+  button {
+    padding: 15px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: #1e90ff;
+    color: white;
+    cursor: not-allowed;
+    transition: background-color 0.2s ease;
+  }
+  button.enabled {
+    cursor: pointer;
+    background-color: #28a745;
+  }
+  #reload-text {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #ff5555;
+  }
+  a.custom-link {
+    color: inherit;
+    text-decoration: none;
+  }
+  a.custom-link:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Main Content -->
+  <div class="content">
+    <h1 id="video-title">Blue Beetle</h1>
+    
+    <img 
+      src="https://delgadohome.site/Items/599651d333f9bd0c73b7170bf6cb9b79/Images/Primary" 
+      alt="Blue Beetle Poster">
+
+    <h2>August 18, 2023 | 2h 7m | 1080p | <a href="/tv/movies" target="_self" class="custom-link">Movies</a></h2>
+    
+    <p>
+      Jaime Reyes suddenly finds himself in possession of an ancient alien biotechnology known as the Scarab. 
+      When the device chooses him as its symbiotic host, he gains extraordinary armor and powers, 
+      transforming him into the superhero Blue Beetle. But with great power comes new challenges, 
+      as Jaime must learn to balance family, responsibility, and destiny.
+    </p>
+
+    <br><br>
+    <a href="javascript:void(0);">
+      <button id="download-button" onclick="openEmbedded()">Please Wait, Loading Movie Link...</button>
+    </a>
+    <div id="reload-text"></div>
+  </div>
+</div>
+
+<script>
+  let countdown = 11;
+  const button = document.getElementById("download-button");
+  const reloadText = document.getElementById("reload-text");
+
+  // Countdown for enabling the button
+  setTimeout(() => {
+    const timer = setInterval(() => {
+      countdown--;
+      if (countdown > 0) {
+        button.textContent = `Get Movie Link in ${countdown} Seconds`;
+      } else {
+        clearInterval(timer);
+        button.textContent = "Watch Movie";
+        button.classList.add("enabled");
+      }
+    }, 1000);
+  }, 1000);
+  
+  function openEmbedded() {
+    if (!button.classList.contains("enabled")) return;
+
+    button.style.display = "none";
+    reloadText.textContent = "Reload Page To Get New Watch Link";
+
+    const newWindow = window.open('about:blank', '_blank');
+    newWindow.document.write(
+      '<!DOCTYPE html>' +
+      '<html lang="en">' +
+      '<head><meta charset="UTF-8"><title>Blue Beetle</title></head>' +
+      '<body style="background:#111; margin:0; padding:0;">' +
+      '<div id="loading" style="font-size:24px; color:#fff; display:flex; justify-content:center; align-items:center; height:100vh;">Loading, please wait...</div>' +
+      '<iframe id="video-frame" src="https://1drv.ms/v/c/56a0c4f446943249/IQRJMpRG9MSgIIBW9AgAAAAAARMDTri0QSZL7_J69r-zSZQ" ' +
+      'frameborder="0" allowfullscreen style="display:none; width:100%; height:100vh;"></iframe>' +
+      '<script>' +
+      'const iframe=document.getElementById("video-frame");' +
+      'const loading=document.getElementById("loading");' +
+      'iframe.onload=function(){loading.style.display="none"; iframe.style.display="block";};' +
+      '<\/script>' +
+      '</body></html>'
+    );
+  }
+</script>
+
+</body>
+</html>
 
