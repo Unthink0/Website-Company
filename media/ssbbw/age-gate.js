@@ -79,11 +79,11 @@
       <h2 class="age-gate-title">Adults Only (18+)</h2>
       <p class="age-gate-text">
         This website contains adult-oriented material intended for viewers who are at least 18 years old.
-        By clicking <b>“I’m 18+ — Enter”</b>, you confirm you are 18 or older.
+        By clicking <b>“I’m 18+”</b>, you confirm you are 18 or older.
       </p>
       <div class="age-gate-actions">
-        <button class="age-gate-btn age-gate-enter" type="button">I’m 18+ — Enter</button>
-        <button class="age-gate-btn age-gate-exit" type="button">I’m under 18 — Leave</button>
+        <button class="age-gate-btn age-gate-enter" type="button">I’m 18+</button>
+        <button class="age-gate-btn age-gate-exit" type="button">I’m under 18</button>
       </div>
       <div class="age-gate-foot">
         Your choice is stored in your browser on this device. Clearing site data will reset it.
@@ -103,7 +103,7 @@
 
   overlay.querySelector(".age-gate-exit").addEventListener("click", () => {
     // Change this if you want a different exit destination
-    window.location.href = "https://www.google.com";
+    window.location.href = "https://www.unthinkdesign.com";
   });
 
   document.body.appendChild(overlay);
