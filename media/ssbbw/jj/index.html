@@ -344,15 +344,15 @@ function applySort(){
 async function loadPosts(){
   try{
     showStatus("Loading posts...");
-    const res = await fetch("posts.json", { cache: "no-store" });
+    const res = await fetch("post.json", { cache: "no-store" });
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    if(!Array.isArray(data)) throw new Error("posts.json is not an array");
+    if(!Array.isArray(data)) throw new Error("posts is not an array");
 
     // Optional: warn if dateISO missing
     const missingISO = data.filter(p => !p.dateISO).length;
     if (missingISO > 0) {
-      console.warn(`Warning: ${missingISO} posts are missing dateISO. Add dateISO: YYYY-MM-DD for perfect sorting.`);
+      console.warn(`Warning: ${missingISO} posts are missing date.`);
     }
 
     allPosts = data;
@@ -361,7 +361,7 @@ async function loadPosts(){
     hideStatus();
     applySort();
   } catch (err){
-    showStatus("Could not load posts.json. Make sure it's in the same folder and GitHub Pages is serving it.");
+    showStatus("Could not load posts. Please reload page.");
     console.error(err);
   }
 }
