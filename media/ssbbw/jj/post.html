@@ -11,7 +11,9 @@
   --panel:#1c1c1c;
   --muted:#bfbfbf;
   --accent:#007aff;
+  --border: rgba(255,255,255,.10);
 }
+
 body{
   margin:0;
   background:var(--bg);
@@ -20,6 +22,7 @@ body{
   display:flex;
   justify-content:center;
 }
+
 .container{
   width:min(900px, 95%);
   margin:40px auto;
@@ -28,15 +31,50 @@ body{
   padding:20px;
   box-shadow:0 8px 30px rgba(0,0,0,.6);
 }
+
 img{
   width:100%;
   border-radius:10px;
   margin-bottom:16px;
   object-fit:cover;
 }
+
 h1{ color:#fff; margin:0 0 8px; }
-.meta{ font-size:.9rem; margin-bottom:14px; color:#ddd; }
-.desc{ line-height:1.45; }
+
+.meta{
+  font-size:.95rem;
+  margin-bottom:12px;
+  color:#ddd;
+}
+
+.desc{
+  line-height:1.5;
+  margin: 0 0 14px;
+}
+
+.details{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin: 12px 0 6px;
+}
+
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px;
+  border-radius:999px;
+  background:#121212;
+  border:1px solid var(--border);
+  color:#e6e6e6;
+  font-size:.92rem;
+}
+
+.pill b{
+  color:#fff;
+  font-weight:700;
+}
 
 .watch-btn{
   display:inline-block;
@@ -45,8 +83,10 @@ h1{ color:#fff; margin:0 0 8px; }
   padding:14px 22px;
   border-radius:30px;
   font-weight:800;
-  text-decoration:none;
-  margin-top:16px;
+  font-size:1rem;
+  border:0;
+  cursor:pointer;
+  margin-top:14px;
   transition:background .2s ease, transform .2s ease;
 }
 .watch-btn:hover{
@@ -65,7 +105,7 @@ h1{ color:#fff; margin:0 0 8px; }
 .notice{
   padding:12px 14px;
   background:#121212;
-  border:1px solid rgba(255,255,255,.10);
+  border:1px solid var(--border);
   border-radius:10px;
   margin-bottom:14px;
   color:#ddd;
@@ -89,6 +129,10 @@ function showStatus(msg){
   statusBox.textContent = msg;
 }
 
+function safe(v){
+  return (v ?? "").toString();
+}
+
 function getId(){
   const params = new URLSearchParams(window.location.search);
   const raw = params.get("id");
@@ -107,32 +151,56 @@ async function loadPost(){
     showStatus("Loading post...");
     const res = await fetch("posts.json", { cache: "no-store" });
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
-    const posts = await res.json();
 
+    const posts = await res.json();
     const post = Array.isArray(posts) ? posts.find(p => p.id === id) : null;
+
     if(!post){
       showStatus("Post not found.");
       return;
     }
 
     statusBox.style.display = "none";
-    document.title = post.title ?? "Post";
+    document.title = safe(post.title) || "Post";
 
-    const safe = (v) => (v ?? "").toString();
+    const dateText = post.date ? safe(post.date) : "";
+    const catText = post.category ? safe(post.category) : "";
+    const durationText = post.duration ? safe(post.duration) : ""; // <-- Video Time
 
     postWrap.innerHTML = `
       <img src="${safe(post.image)}" alt="${safe(post.title)}">
       <h1>${safe(post.title)}</h1>
-      <div class="meta">
-        ${post.date ? safe(post.date) : ""}${post.category ? " • " + safe(post.category) : ""}
-      </div>
-      ${post.description ? `<div class="desc">${safe(post.description)}</div>` : ""}
 
-      ${post.watchUrl ? `<a class="watch-btn" href="${safe(post.watchUrl)}" target="_blank" rel="noopener">▶ Watch Video</a>` : ""}
+      <div class="meta">
+        ${dateText}${(dateText && catText) ? " • " : ""}${catText}
+      </div>
+
+      ${post.description ? `<p class="desc">${safe(post.description)}</p>` : ""}
+
+      <div class="details">
+        ${durationText ? `<div class="pill"><b>Video Time</b> ${durationText}</div>` : ""}
+        ${post.weight ? `<div class="pill"><b>Weight</b> ${safe(post.weight)}</div>` : ""}
+        ${post.height ? `<div class="pill"><b>Height</b> ${safe(post.height)}</div>` : ""}
+        ${post.bodyType ? `<div class="pill"><b>Body Type</b> ${safe(post.bodyType)}</div>` : ""}
+      </div>
+
+      ${post.watchUrl ? `<button class="watch-btn" id="watchBtn" type="button">▶ Watch Video</button>` : ""}
 
       <br>
       <a class="back" href="./">← Back to gallery</a>
     `;
+
+    // Open in a new tab/window named "Video Player"
+    if (post.watchUrl) {
+      const btn = document.getElementById("watchBtn");
+      btn.addEventListener("click", () => {
+        const win = window.open(post.watchUrl, "Video Player", "noopener,noreferrer");
+        // Note: many sites control their own title, so this may be overwritten.
+        try {
+          if (win) win.document.title = "Video Player";
+        } catch (e) {}
+      });
+    }
   } catch(err){
     console.error(err);
     showStatus("Could not load posts.json. Make sure it’s in the same folder and GitHub Pages is serving it.");
