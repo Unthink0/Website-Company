@@ -1,17 +1,363 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Attention Needed!</title>
-  <link rel="icon" type="image/x-icon" href="/images/logo.ico">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Juicy Jackie</title>
+<link rel="icon" type="image/x-icon" href="/images/logo.ico">
 
+<style>
+:root{
+  --bg:#0f0f0f;
+  --panel:#1c1c1c;
+  --muted:#bfbfbf;
+  --gap:12px;
+}
+
+html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;}
+body{
+  background:var(--bg);
+  color:var(--muted);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+header{
+  width:100%;
+  background:#131313;
+  padding:28px 16px 18px;
+  text-align:center;
+  box-shadow:0 2px 12px rgba(0,0,0,0.6);
+}
+header h1{margin:0;font-size:1.375rem;color:#fff;letter-spacing:0.2px;}
+
+.subcategory {
+  color: #ff5fa2;
+  font-size: 1rem;
+  margin-top: 8px;
+  margin-bottom: 14px;
+  letter-spacing: 0.5px;
+}
+.subcategory-link {
+  color: #ff5fa2;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+.subcategory-link:hover {
+  color: #ffa6d6;
+  text-shadow: 0 0 6px rgba(255, 95, 162, 0.6);
+}
+
+.model-profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  background: var(--panel);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+  margin: 14px auto 0;
+  width:min(1280px, 96%);
+}
+.model-photo {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+.model-description {
+  max-width: 600px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.wrap{
+  width:min(1280px, 96%);
+  margin:18px auto 28px;
+}
+
+/* Controls */
+.sort-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0 auto 16px;
+}
+.sort-controls .control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 200px;
+}
+.sort-controls label { color: #fff; font-size: 0.95rem; white-space: nowrap; }
+.sort-controls select,
+.sort-controls input {
+  background: #111;
+  color: white;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 16px;
+  width: 100%;
+}
+.sort-controls #video-counter {
+  color: #fff;
+  font-size: 1rem;
+  text-align: right;
+  white-space: nowrap;
+}
+@media (max-width: 700px) {
+  .sort-controls { flex-direction: column; align-items: stretch; }
+  .sort-controls .control { width: 100%; justify-content: space-between; }
+  .sort-controls #video-counter { text-align: left; }
+}
+
+/* Grid */
+.grid{
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--gap);
+}
+.tile{
+  background:var(--panel);
+  border-radius:10px;
+  overflow:hidden;
+  display:block;
+  box-shadow:0 6px 18px rgba(0,0,0,0.55);
+  transform-origin:center;
+  transition:transform .18s ease, box-shadow .18s ease;
+  text-decoration:none;
+}
+.tile:focus,
+.tile:hover{ transform:translateY(-6px); box-shadow:0 12px 26px rgba(0,0,0,0.65); outline: none; }
+.tile img{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  display:block;
+}
+.caption{
+  padding:10px 12px;
+  font-size:0.85rem;
+  color:var(--muted);
+  background:linear-gradient(0deg, rgba(255,255,255,0.01), transparent);
+}
+@media (max-width:1100px){ .grid{ grid-template-columns: repeat(4, 1fr); } }
+@media (max-width:860px){ .grid{ grid-template-columns: repeat(3, 1fr); } }
+@media (max-width:560px){ .grid{ grid-template-columns: repeat(2, 1fr); } .tile img{ height:120px; } }
+
+footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:center; }
+
+/* Donate */
+.donate-popup {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: #007aff;
+  color: #fff;
+  padding: 0.9rem 1.5rem;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideIn 1s ease forwards 1.5s;
+  transition: background 0.3s;
+  z-index: 1000;
+}
+.donate-popup:hover { background-color: #0091ff; }
+@keyframes slideIn { to { opacity: 1; transform: translateY(0); } }
+
+.footer-link{
+  display:inline-block;
+  margin: 8px 0 0;
+  color:#9cc7ff;
+  text-decoration:none;
+}
+.footer-link:hover{ text-decoration:underline; }
+
+.status{
+  padding:12px 14px;
+  background:#121212;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:10px;
+  margin-bottom:14px;
+  color:#ddd;
+  font-size:.95rem;
+}
+</style>
 </head>
+
 <body>
-  <header>
-    <h1>Removed Due To Lack Of Funding. Donate to Save this Project</h1>
-  </header>
-  
-  <a href="/media/donate" target="_blank" class="donate-popup">Donate Now!</a>
+<header>
+  <h1>Juicy Jackie</h1>
+
+  <p class="subcategory">
+    <a href="/media/ssbbw" class="subcategory-link">Ssbbw</a>
+  </p>
+
+  <div class="model-profile">
+    <img src="https://imagecdn.clips4sale.com/accounts99/135731/clip_images/previewlg_31780923.jpg"
+         alt="Profile"
+         class="model-photo">
+    <div class="model-description">
+      <p><b>Latest Weight</b> - 611 lb (August 2025) <br> <b>Height</b> - 5' 4" <br> <b>Body Type</b> - Pear</p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" role="main" aria-label="Media gallery">
+  <div class="sort-controls">
+    <div class="control sort-control">
+      <label for="sortSelect">Sort By:</label>
+      <select id="sortSelect">
+        <option value="newest" selected>Newest to Oldest</option>
+        <option value="oldest">Oldest to Newest</option>
+        <option value="titleaz">Title A → Z</option>
+        <option value="titleza">Title Z → A</option>
+      </select>
+    </div>
+
+    <div class="control search-control">
+      <input type="text" id="searchInput" placeholder="Search videos..." />
+    </div>
+
+    <div class="control counter-control">
+      <span id="video-counter">Total Videos: <span id="counter-value">0</span></span>
+    </div>
+  </div>
+
+  <div id="status" class="status" style="display:none;"></div>
+
+  <section class="grid" id="image-grid" aria-label="Image grid"></section>
+</main>
+
+<!-- Floating Donate Popup -->
+<a href="/media/donate" target="_blank" class="donate-popup">Donate Now!</a>
+
+<footer>
+  We do <code>NOT</code> host the videos on our servers.<br>
+  <a class="footer-link" href="/media/donate" target="_blank">💙 Donate Now</a>
+</footer>
+
+<script>
+const grid = document.getElementById("image-grid");
+const sortSelect = document.getElementById("sortSelect");
+const searchInput = document.getElementById("searchInput");
+const counterValue = document.getElementById("counter-value");
+const statusBox = document.getElementById("status");
+
+let allPosts = [];
+let filteredPosts = [];
+
+function showStatus(msg){
+  statusBox.style.display = "block";
+  statusBox.textContent = msg;
+}
+function hideStatus(){
+  statusBox.style.display = "none";
+  statusBox.textContent = "";
+}
+
+function normalize(str){
+  return (str ?? "").toString().toLowerCase().trim();
+}
+
+function renderGrid(posts){
+  grid.innerHTML = "";
+  posts.forEach(post => {
+    const a = document.createElement("a");
+    a.className = "tile";
+    a.href = `post.html?id=${encodeURIComponent(post.id)}`;
+    a.setAttribute("tabindex","0");
+
+    const img = document.createElement("img");
+    img.src = post.image;
+    img.alt = `${post.title} Cover`;
+
+    const cap = document.createElement("div");
+    cap.className = "caption";
+    cap.textContent = post.title;
+
+    a.appendChild(img);
+    a.appendChild(cap);
+    grid.appendChild(a);
+  });
+
+  counterValue.textContent = posts.length;
+}
+
+function applySearch(){
+  const q = normalize(searchInput.value);
+  if(!q){
+    filteredPosts = [...allPosts];
+  } else {
+    filteredPosts = allPosts.filter(p => {
+      const hay = `${p.title ?? ""} ${p.category ?? ""} ${p.date ?? ""} ${p.description ?? ""}`.toLowerCase();
+      return hay.includes(q);
+    });
+  }
+  applySort();
+}
+
+function applySort(){
+  const mode = sortSelect.value;
+  const posts = [...filteredPosts];
+
+  if(mode === "newest"){
+    posts.sort((a,b) => (b.date ?? "").localeCompare(a.date ?? ""));
+  } else if(mode === "oldest"){
+    posts.sort((a,b) => (a.date ?? "").localeCompare(b.date ?? ""));
+  } else if(mode === "titleaz"){
+    posts.sort((a,b) => (a.title ?? "").localeCompare(b.title ?? ""));
+  } else if(mode === "titleza"){
+    posts.sort((a,b) => (b.title ?? "").localeCompare(a.title ?? ""));
+  }
+
+  renderGrid(posts);
+}
+
+async function loadPosts(){
+  try{
+    showStatus("Loading posts...");
+    const res = await fetch("posts.json", { cache: "no-store" });
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if(!Array.isArray(data)) throw new Error("posts.json is not an array");
+
+    allPosts = data;
+    filteredPosts = [...allPosts];
+
+    hideStatus();
+    applySort();
+  } catch (err){
+    showStatus("Could not load posts.json. Make sure it's in the same folder and GitHub Pages is serving it.");
+    console.error(err);
+  }
+}
+
+sortSelect.addEventListener("change", applySort);
+searchInput.addEventListener("input", applySearch);
+
+window.addEventListener("DOMContentLoaded", loadPosts);
+</script>
+
+<!-- Age gate on every page -->
+<script src="age-gate.js"></script>
 </body>
 </html>
