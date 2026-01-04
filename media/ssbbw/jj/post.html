@@ -52,13 +52,13 @@ h1{ color:#fff; margin:0 0 8px; }
   margin: 0 0 14px;
 }
 
+/* Optional extra pills you already had support for */
 .details{
   display:flex;
   flex-wrap:wrap;
   gap:10px;
   margin: 12px 0 6px;
 }
-
 .pill{
   display:inline-flex;
   align-items:center;
@@ -70,11 +70,7 @@ h1{ color:#fff; margin:0 0 8px; }
   color:#e6e6e6;
   font-size:.92rem;
 }
-
-.pill b{
-  color:#fff;
-  font-weight:700;
-}
+.pill b{ color:#fff; font-weight:700; }
 
 .watch-btn{
   display:inline-block;
@@ -111,6 +107,11 @@ h1{ color:#fff; margin:0 0 8px; }
   color:#ddd;
   font-size:.95rem;
 }
+
+.notice.error{
+  border-color: rgba(255, 80, 80, .35);
+  color:#ffd1d1;
+}
 </style>
 </head>
 
@@ -124,14 +125,17 @@ h1{ color:#fff; margin:0 0 8px; }
 const statusBox = document.getElementById("status");
 const postWrap = document.getElementById("post");
 
-function showStatus(msg){
+function showStatus(msg, isError=false){
   statusBox.style.display = "block";
   statusBox.textContent = msg;
+  statusBox.classList.toggle("error", !!isError);
 }
-
-function safe(v){
-  return (v ?? "").toString();
+function hideStatus(){
+  statusBox.style.display = "none";
+  statusBox.textContent = "";
+  statusBox.classList.remove("error");
 }
+function safe(v){ return (v ?? "").toString(); }
 
 function getId(){
   const params = new URLSearchParams(window.location.search);
@@ -140,10 +144,14 @@ function getId(){
   return Number.isFinite(id) ? id : null;
 }
 
+function joinMeta(parts){
+  return parts.filter(Boolean).join(" \u2022 "); // bullet dot
+}
+
 async function loadPost(){
   const id = getId();
   if(id === null){
-    showStatus("Missing or invalid post id. Example: post.html?id=80");
+    showStatus("Missing or invalid post id. Example: post.html?id=80", true);
     return;
   }
 
@@ -156,29 +164,29 @@ async function loadPost(){
     const post = Array.isArray(posts) ? posts.find(p => p.id === id) : null;
 
     if(!post){
-      showStatus("Post not found.");
+      showStatus("Post not found.", true);
       return;
     }
 
-    statusBox.style.display = "none";
+    hideStatus();
     document.title = safe(post.title) || "Post";
 
-    const dateText = post.date ? safe(post.date) : "";
-    const catText = post.category ? safe(post.category) : "";
-    const durationText = post.duration ? safe(post.duration) : ""; // <-- Video Time
+    // Meta: date • category • duration
+    const metaText = joinMeta([
+      post.date ? safe(post.date) : "",
+      post.category ? safe(post.category) : "",
+      post.duration ? safe(post.duration) : ""
+    ]);
 
     postWrap.innerHTML = `
       <img src="${safe(post.image)}" alt="${safe(post.title)}">
       <h1>${safe(post.title)}</h1>
 
-      <div class="meta">
-        ${dateText}${(dateText && catText) ? " • " : ""}${catText}
-      </div>
+      ${metaText ? `<div class="meta">${metaText}</div>` : ""}
 
       ${post.description ? `<p class="desc">${safe(post.description)}</p>` : ""}
 
       <div class="details">
-        ${durationText ? `<div class="pill"><b>Video Time</b> ${durationText}</div>` : ""}
         ${post.weight ? `<div class="pill"><b>Weight</b> ${safe(post.weight)}</div>` : ""}
         ${post.height ? `<div class="pill"><b>Height</b> ${safe(post.height)}</div>` : ""}
         ${post.bodyType ? `<div class="pill"><b>Body Type</b> ${safe(post.bodyType)}</div>` : ""}
@@ -190,20 +198,48 @@ async function loadPost(){
       <a class="back" href="./">← Back to gallery</a>
     `;
 
-    // Open in a new tab/window named "Video Player"
+    // about:blank popup + error message if blocked / fails
     if (post.watchUrl) {
       const btn = document.getElementById("watchBtn");
       btn.addEventListener("click", () => {
-        const win = window.open(post.watchUrl, "Video Player", "noopener,noreferrer");
-        // Note: many sites control their own title, so this may be overwritten.
+        hideStatus();
+
+        const win = window.open("about:blank", "Video Player", "noopener,noreferrer");
+
+        // Popup blocked
+        if (!win) {
+          showStatus("Video not loaded. Please allow popups, then try again.", true);
+          return;
+        }
+
+        // Try setting a title (may be overwritten by destination site)
+        try { win.document.title = "Video Player"; } catch (e) {}
+
+        // Navigate to the real video URL
         try {
-          if (win) win.document.title = "Video Player";
-        } catch (e) {}
+          win.location.href = post.watchUrl;
+        } catch (e) {
+          showStatus("Video not loaded. Close the tab and try again.", true);
+          try { win.close(); } catch (x) {}
+          return;
+        }
+
+        // Extra safety: if window immediately closes or becomes inaccessible
+        setTimeout(() => {
+          try {
+            if (win.closed) {
+              showStatus("Video not loaded. Close the tab and try again.", true);
+            }
+          } catch (e) {
+            // If we can't read closed state due to browser rules, ignore
+          }
+        }, 800);
       });
     }
+
   } catch(err){
     console.error(err);
-    showStatus("Could not load posts.json. Make sure it’s in the same folder and GitHub Pages is serving it.");
+    showStatus("Could not load posts.json. Make sure it’s in the same folder and GitHub Pages is serving it.", true);
   }
 }
 
@@ -214,3 +250,4 @@ window.addEventListener("DOMContentLoaded", loadPost);
 <script src="age-gate.js"></script>
 </body>
 </html>
+
