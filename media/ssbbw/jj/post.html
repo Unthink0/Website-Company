@@ -32,6 +32,20 @@ body{
   box-shadow:0 8px 30px rgba(0,0,0,.6);
 }
 
+.notice{
+  padding:12px 14px;
+  background:#121212;
+  border:1px solid var(--border);
+  border-radius:10px;
+  margin-bottom:14px;
+  color:#ddd;
+  font-size:.95rem;
+}
+.notice.error{
+  border-color: rgba(255, 80, 80, .35);
+  color:#ffd1d1;
+}
+
 img{
   width:100%;
   border-radius:10px;
@@ -39,7 +53,10 @@ img{
   object-fit:cover;
 }
 
-h1{ color:#fff; margin:0 0 8px; }
+h1{
+  color:#fff;
+  margin:0 0 8px;
+}
 
 .meta{
   font-size:.95rem;
@@ -52,12 +69,11 @@ h1{ color:#fff; margin:0 0 8px; }
   margin: 0 0 14px;
 }
 
-/* Optional extra pills you already had support for */
 .details{
   display:flex;
   flex-wrap:wrap;
   gap:10px;
-  margin: 12px 0 6px;
+  margin: 10px 0 6px;
 }
 .pill{
   display:inline-flex;
@@ -90,6 +106,17 @@ h1{ color:#fff; margin:0 0 8px; }
   transform:translateY(-2px);
 }
 
+.manual-link{
+  display:inline-block;
+  background:#007aff;
+  color:#fff;
+  padding:12px 18px;
+  border-radius:999px;
+  font-weight:800;
+  text-decoration:none;
+  margin-top:10px;
+}
+
 .back{
   display:inline-block;
   margin-top:22px;
@@ -97,21 +124,6 @@ h1{ color:#fff; margin:0 0 8px; }
   text-decoration:none;
 }
 .back:hover{ text-decoration:underline; }
-
-.notice{
-  padding:12px 14px;
-  background:#121212;
-  border:1px solid var(--border);
-  border-radius:10px;
-  margin-bottom:14px;
-  color:#ddd;
-  font-size:.95rem;
-}
-
-.notice.error{
-  border-color: rgba(255, 80, 80, .35);
-  color:#ffd1d1;
-}
 </style>
 </head>
 
@@ -125,17 +137,21 @@ h1{ color:#fff; margin:0 0 8px; }
 const statusBox = document.getElementById("status");
 const postWrap = document.getElementById("post");
 
+function safe(v){ return (v ?? "").toString(); }
+
 function showStatus(msg, isError=false){
   statusBox.style.display = "block";
   statusBox.textContent = msg;
   statusBox.classList.toggle("error", !!isError);
 }
+
 function hideStatus(){
   statusBox.style.display = "none";
   statusBox.textContent = "";
   statusBox.classList.remove("error");
+  const fallback = document.getElementById("manualVideoLink");
+  if (fallback) fallback.remove();
 }
-function safe(v){ return (v ?? "").toString(); }
 
 function getId(){
   const params = new URLSearchParams(window.location.search);
@@ -146,6 +162,21 @@ function getId(){
 
 function joinMeta(parts){
   return parts.filter(Boolean).join(" \u2022 "); // bullet dot
+}
+
+function addManualFallback(url){
+  if (document.getElementById("manualVideoLink")) return;
+
+  const div = document.createElement("div");
+  div.id = "manualVideoLink";
+  div.innerHTML = `
+    <div style="margin-top:10px;">
+      <a class="manual-link" href="${url}" target="Video Player" rel="noopener noreferrer">
+        Open Video Player
+      </a>
+    </div>
+  `;
+  statusBox.insertAdjacentElement("afterend", div);
 }
 
 async function loadPost(){
@@ -171,13 +202,13 @@ async function loadPost(){
     hideStatus();
     document.title = safe(post.title) || "Post";
 
-    // Meta: date • category • duration
     const metaText = joinMeta([
       post.date ? safe(post.date) : "",
       post.category ? safe(post.category) : "",
       post.duration ? safe(post.duration) : ""
     ]);
 
+    // Build page
     postWrap.innerHTML = `
       <img src="${safe(post.image)}" alt="${safe(post.title)}">
       <h1>${safe(post.title)}</h1>
@@ -192,48 +223,49 @@ async function loadPost(){
         ${post.bodyType ? `<div class="pill"><b>Body Type</b> ${safe(post.bodyType)}</div>` : ""}
       </div>
 
-      ${post.watchUrl ? `<button class="watch-btn" id="watchBtn" type="button">▶ Watch Video</button>` : ""}
+      ${
+        post.watchUrl ? `
+          <!-- Hidden link (more reliable than window.open on Safari) -->
+          <a id="watchLink" href="${safe(post.watchUrl)}" target="Video Player" rel="noopener noreferrer" style="display:none;"></a>
+          <button class="watch-btn" id="watchBtn" type="button">▶ Watch Video</button>
+        ` : ""
+      }
 
       <br>
       <a class="back" href="./">← Back to gallery</a>
     `;
 
-    // about:blank popup + error message if blocked / fails
+    // Wire up Watch button
     if (post.watchUrl) {
       const btn = document.getElementById("watchBtn");
+      const link = document.getElementById("watchLink");
+      const url = safe(post.watchUrl);
+
       btn.addEventListener("click", () => {
         hideStatus();
 
-        const win = window.open("about:blank", "Video Player", "noopener,noreferrer");
-
-        // Popup blocked
-        if (!win) {
-          showStatus("Video not loaded. Please allow popups, then try again.", true);
+        // If URL is invalid, show message
+        if (!/^https?:\/\//i.test(url)) {
+          showStatus("Video not loaded. Invalid video URL.", true);
           return;
         }
 
-        // Try setting a title (may be overwritten by destination site)
-        try { win.document.title = "Video Player"; } catch (e) {}
-
-        // Navigate to the real video URL
+        // Best compatibility: simulate a user link click (works better on GitHub Pages/Safari)
         try {
-          win.location.href = post.watchUrl;
+          link.click();
         } catch (e) {
-          showStatus("Video not loaded. Close the tab and try again.", true);
-          try { win.close(); } catch (x) {}
+          // If click fails for any reason, show fallback
+          showStatus("Video not loaded. Exit tab and try again.", true);
+          addManualFallback(url);
           return;
         }
 
-        // Extra safety: if window immediately closes or becomes inaccessible
+        // If the browser opens a blank tab or blocks popups, show helper text + manual link
+        // (User can close the blank tab and click the fallback link)
         setTimeout(() => {
-          try {
-            if (win.closed) {
-              showStatus("Video not loaded. Close the tab and try again.", true);
-            }
-          } catch (e) {
-            // If we can't read closed state due to browser rules, ignore
-          }
-        }, 800);
+          showStatus("If the video didn’t load: exit the Video Player tab and try again. You may need to allow popups for this site.", true);
+          addManualFallback(url);
+        }, 200);
       });
     }
 
@@ -250,4 +282,3 @@ window.addEventListener("DOMContentLoaded", loadPost);
 <script src="age-gate.js"></script>
 </body>
 </html>
-
