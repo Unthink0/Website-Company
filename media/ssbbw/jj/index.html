@@ -278,6 +278,11 @@ function normalize(str){
   return (str ?? "").toString().toLowerCase().trim();
 }
 
+function getSortKeyISO(post){
+  // Use dateISO for sorting; fallback to date; then empty
+  return (post.dateISO ?? post.date ?? "").toString();
+}
+
 function renderGrid(posts){
   grid.innerHTML = "";
   posts.forEach(post => {
@@ -304,14 +309,16 @@ function renderGrid(posts){
 
 function applySearch(){
   const q = normalize(searchInput.value);
+
   if(!q){
     filteredPosts = [...allPosts];
   } else {
     filteredPosts = allPosts.filter(p => {
-      const hay = `${p.title ?? ""} ${p.category ?? ""} ${p.date ?? ""} ${p.description ?? ""}`.toLowerCase();
+      const hay = `${p.title ?? ""} ${p.category ?? ""} ${p.date ?? ""} ${p.duration ?? ""} ${p.description ?? ""}`.toLowerCase();
       return hay.includes(q);
     });
   }
+
   applySort();
 }
 
@@ -320,9 +327,11 @@ function applySort(){
   const posts = [...filteredPosts];
 
   if(mode === "newest"){
-    posts.sort((a,b) => (b.date ?? "").localeCompare(a.date ?? ""));
+    // Newest to Oldest using ISO key
+    posts.sort((a,b) => getSortKeyISO(b).localeCompare(getSortKeyISO(a)));
   } else if(mode === "oldest"){
-    posts.sort((a,b) => (a.date ?? "").localeCompare(b.date ?? ""));
+    // Oldest to Newest using ISO key
+    posts.sort((a,b) => getSortKeyISO(a).localeCompare(getSortKeyISO(b)));
   } else if(mode === "titleaz"){
     posts.sort((a,b) => (a.title ?? "").localeCompare(b.title ?? ""));
   } else if(mode === "titleza"){
@@ -339,6 +348,12 @@ async function loadPosts(){
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     if(!Array.isArray(data)) throw new Error("posts.json is not an array");
+
+    // Optional: warn if dateISO missing
+    const missingISO = data.filter(p => !p.dateISO).length;
+    if (missingISO > 0) {
+      console.warn(`Warning: ${missingISO} posts are missing dateISO. Add dateISO: YYYY-MM-DD for perfect sorting.`);
+    }
 
     allPosts = data;
     filteredPosts = [...allPosts];
