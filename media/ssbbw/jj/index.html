@@ -212,9 +212,10 @@ footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:c
   </p>
 
   <div class="model-profile">
-    <img src="https://imagecdn.clips4sale.com/accounts99/135731/clip_images/previewlg_32491557.jpg"
-         alt="Profile"
-         class="model-photo">
+    <img id="modelPhoto"
+     src=""
+     alt="Profile"
+     class="model-photo">
     <div class="model-description">
       <p><b>Latest Weight</b> - 611 lb (August 2025) <br> <b>Height</b> - 5' 4" <br> <b>Body Type</b> - Pear</p>
     </div>
@@ -264,6 +265,23 @@ const statusBox = document.getElementById("status");
 
 let allPosts = [];
 let filteredPosts = [];
+
+  function updateModelPhotoFromLatestPost(posts){
+  if (!Array.isArray(posts) || posts.length === 0) return;
+
+  const latest = posts
+    .filter(p => p.dateISO && p.image)
+    .sort((a, b) => b.dateISO.localeCompare(a.dateISO))[0];
+
+  if (!latest) return;
+
+  const img = document.getElementById("modelPhoto");
+  if (img) {
+    img.src = latest.image;
+    img.alt = latest.title || "Latest post";
+  }
+}
+
 
 function showStatus(msg){
   statusBox.style.display = "block";
@@ -357,7 +375,9 @@ async function loadPosts(){
 
     allPosts = data;
     filteredPosts = [...allPosts];
-
+    
+updateModelPhotoFromLatestPost(allPosts);
+    
     hideStatus();
     applySort();
   } catch (err){
