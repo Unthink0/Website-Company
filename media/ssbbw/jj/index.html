@@ -314,7 +314,7 @@ function applySearch(){
     filteredPosts = [...allPosts];
   } else {
     filteredPosts = allPosts.filter(p => {
-      const hay = `${p.title ?? ""} ${p.category ?? ""} ${p.date ?? ""} ${p.duration ?? ""} ${p.description ?? ""}`.toLowerCase();
+      const hay = `${p.title ?? ""} ${p.keywords ?? ""}`.toLowerCase();
       return hay.includes(q);
     });
   }
