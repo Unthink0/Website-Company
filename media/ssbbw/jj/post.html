@@ -188,7 +188,7 @@ async function loadPost(){
 
   try{
     showStatus("Loading post...");
-    const res = await fetch("posts.json", { cache: "no-store" });
+    const res = await fetch("/posts.json", { cache: "no-store" });
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
 
     const posts = await res.json();
