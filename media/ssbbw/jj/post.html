@@ -182,7 +182,7 @@ function addManualFallback(url){
 async function loadPost(){
   const id = getId();
   if(id === null){
-    showStatus("Missing or invalid post id. Example: post.html?id=80", true);
+    showStatus("Missing or invalid post id.", true);
     return;
   }
 
@@ -271,7 +271,7 @@ async function loadPost(){
 
   } catch(err){
     console.error(err);
-    showStatus("Could not load posts.json. Make sure it’s in the same folder and GitHub Pages is serving it.", true);
+    showStatus("Could not load post. Please reload page.", true);
   }
 }
 
