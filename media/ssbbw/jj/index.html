@@ -162,6 +162,10 @@ header h1{margin:0;font-size:1.375rem;color:#fff;letter-spacing:0.2px;}
 @media (max-width:860px){ .grid{ grid-template-columns: repeat(3, 1fr); } }
 @media (max-width:560px){ .grid{ grid-template-columns: repeat(2, 1fr); } .tile img{ height:120px; } }
 
+.page-size-control select{
+  max-width:120px;
+}
+  
 /* Load more + bottom counter */
 .load-more-wrap{
   display:flex;
@@ -276,9 +280,19 @@ footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:c
     </div>
 
     <div class="control search-control">
-      <input type="text" id="searchInput" placeholder="Search videos by name or keywords..." />
-    </div>
-  </div>
+  <input type="text" id="searchInput" placeholder="Search videos by name or keywords..." />
+</div>
+
+<div class="control page-size-control">
+  <label for="pageSizeSelect">Load:</label>
+  <select id="pageSizeSelect">
+    <option value="25" selected>25</option>
+    <option value="50">50</option>
+    <option value="75">75</option>
+    <option value="100">100</option>
+    <option value="all">All</option>
+  </select>
+</div>
 
   <div id="status" class="status" style="display:none;"></div>
 
@@ -312,6 +326,7 @@ footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:c
 const grid = document.getElementById("image-grid");
 const sortSelect = document.getElementById("sortSelect");
 const searchInput = document.getElementById("searchInput");
+const pageSizeSelect = document.getElementById("pageSizeSelect"); // <-- NEW
 const statusBox = document.getElementById("status");
 
 const loadMoreWrap = document.getElementById("loadMoreWrap");
@@ -322,7 +337,8 @@ const counterValue = document.getElementById("counter-value");
 const counterAltWrap = document.getElementById("video-counter-alt");
 const counterAltValue = document.getElementById("counter-value-alt");
 
-const PAGE_SIZE = 20;
+// Default: 25 per load
+let PAGE_SIZE = 25; // <-- NEW (was const 20)
 let visibleCount = PAGE_SIZE;
 
 let allPosts = [];
@@ -403,6 +419,7 @@ function renderGrid(posts){
 
     const remaining = totalMatching - visibleCount;
     loadMoreBtn.disabled = remaining <= 0;
+
     loadMoreHint.textContent =
       `Showing ${slice.length} of ${totalMatching}` + (remaining > 0 ? ` — ${remaining} more` : "");
   } else {
@@ -468,17 +485,39 @@ async function loadPosts(){
   }
 }
 
+// Load More button
 loadMoreBtn.addEventListener("click", () => {
   visibleCount += PAGE_SIZE;
   renderGrid(currentSorted);
 });
 
+// Sort change resets to current page size
 sortSelect.addEventListener("change", () => {
   visibleCount = PAGE_SIZE;
   applySort();
 });
 
+// Search resets to current page size
 searchInput.addEventListener("input", applySearch);
+
+// NEW: user chooses how many to load per click
+if (pageSizeSelect) {
+  // Ensure default is 25 if your HTML didn't set selected
+  pageSizeSelect.value = pageSizeSelect.value || "25";
+
+  pageSizeSelect.addEventListener("change", () => {
+    const val = pageSizeSelect.value;
+
+    if (val === "all") {
+      PAGE_SIZE = Number.MAX_SAFE_INTEGER;
+    } else {
+      PAGE_SIZE = parseInt(val, 10) || 25;
+    }
+
+    visibleCount = PAGE_SIZE;
+    renderGrid(currentSorted);
+  });
+}
 
 window.addEventListener("DOMContentLoaded", loadPosts);
 </script>
