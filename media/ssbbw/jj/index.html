@@ -71,6 +71,7 @@ header h1{margin:0;font-size:1.375rem;color:#fff;letter-spacing:0.2px;}
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  background:#111;
 }
 .model-description {
   max-width: 600px;
@@ -113,16 +114,10 @@ header h1{margin:0;font-size:1.375rem;color:#fff;letter-spacing:0.2px;}
   font-size: 16px;
   width: 100%;
 }
-.sort-controls #video-counter {
-  color: #fff;
-  font-size: 1rem;
-  text-align: right;
-  white-space: nowrap;
-}
+
 @media (max-width: 700px) {
   .sort-controls { flex-direction: column; align-items: stretch; }
   .sort-controls .control { width: 100%; justify-content: space-between; }
-  .sort-controls #video-counter { text-align: left; }
 }
 
 /* Grid */
@@ -159,7 +154,57 @@ header h1{margin:0;font-size:1.375rem;color:#fff;letter-spacing:0.2px;}
 @media (max-width:860px){ .grid{ grid-template-columns: repeat(3, 1fr); } }
 @media (max-width:560px){ .grid{ grid-template-columns: repeat(2, 1fr); } .tile img{ height:120px; } }
 
-footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:center; }
+/* Load more + bottom counter */
+.load-more-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  margin: 18px 0 0;
+}
+.load-more-btn{
+  background:#111;
+  color:#fff;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;
+  padding:12px 18px;
+  font-weight:800;
+  font-size:1rem;
+  cursor:pointer;
+  transition:transform .15s ease, background .15s ease;
+}
+.load-more-btn:hover{
+  background:#161616;
+  transform: translateY(-1px);
+}
+.load-more-btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+  transform:none;
+}
+.load-more-hint{
+  color:#cfcfcf;
+  font-size:.9rem;
+  opacity:.9;
+}
+
+.bottom-counter{
+  margin-top: 10px;
+  color:#fff;
+  font-size:1rem;
+  text-align:center;
+}
+
+/* Status */
+.status{
+  padding:12px 14px;
+  background:#121212;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:10px;
+  margin-bottom:14px;
+  color:#ddd;
+  font-size:.95rem;
+}
 
 /* Donate */
 .donate-popup {
@@ -183,6 +228,7 @@ footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:c
 .donate-popup:hover { background-color: #0091ff; }
 @keyframes slideIn { to { opacity: 1; transform: translateY(0); } }
 
+footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:center; }
 .footer-link{
   display:inline-block;
   margin: 8px 0 0;
@@ -190,16 +236,6 @@ footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:c
   text-decoration:none;
 }
 .footer-link:hover{ text-decoration:underline; }
-
-.status{
-  padding:12px 14px;
-  background:#121212;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:10px;
-  margin-bottom:14px;
-  color:#ddd;
-  font-size:.95rem;
-}
 </style>
 </head>
 
@@ -212,10 +248,7 @@ footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:c
   </p>
 
   <div class="model-profile">
-    <img id="modelPhoto"
-     src=""
-     alt="Profile"
-     class="model-photo">
+    <img id="modelPhoto" src="" alt="Profile" class="model-photo">
     <div class="model-description">
       <p><b>Latest Weight</b> - 611 lb (August 2025) <br> <b>Height</b> - 5' 4" <br> <b>Body Type</b> - Pear</p>
     </div>
@@ -237,15 +270,26 @@ footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:c
     <div class="control search-control">
       <input type="text" id="searchInput" placeholder="Search videos by name or keywords..." />
     </div>
-
-    <div class="control counter-control">
-      <span id="video-counter">Total Videos: <span id="counter-value">0</span></span>
-    </div>
   </div>
 
   <div id="status" class="status" style="display:none;"></div>
 
   <section class="grid" id="image-grid" aria-label="Image grid"></section>
+
+  <div class="load-more-wrap" id="loadMoreWrap" style="display:none;">
+    <button id="loadMoreBtn" class="load-more-btn" type="button">Load More</button>
+    <div id="loadMoreHint" class="load-more-hint"></div>
+
+    <!-- Bottom counter (keeps "Total Videos") -->
+    <div class="bottom-counter" id="video-counter">
+      Total Videos: <span id="counter-value">0</span>
+    </div>
+  </div>
+
+  <!-- If there are <= 20 posts, we still show the bottom counter -->
+  <div class="bottom-counter" id="video-counter-alt" style="display:none;">
+    Total Videos: <span id="counter-value-alt">0</span>
+  </div>
 </main>
 
 <!-- Floating Donate Popup -->
@@ -260,28 +304,22 @@ footer{ color:var(--muted); font-size:0.85rem; padding:18px 0 48px; text-align:c
 const grid = document.getElementById("image-grid");
 const sortSelect = document.getElementById("sortSelect");
 const searchInput = document.getElementById("searchInput");
-const counterValue = document.getElementById("counter-value");
 const statusBox = document.getElementById("status");
+
+const loadMoreWrap = document.getElementById("loadMoreWrap");
+const loadMoreBtn  = document.getElementById("loadMoreBtn");
+const loadMoreHint = document.getElementById("loadMoreHint");
+
+const counterValue = document.getElementById("counter-value");
+const counterAltWrap = document.getElementById("video-counter-alt");
+const counterAltValue = document.getElementById("counter-value-alt");
+
+const PAGE_SIZE = 20;
+let visibleCount = PAGE_SIZE;
 
 let allPosts = [];
 let filteredPosts = [];
-
-  function updateModelPhotoFromLatestPost(posts){
-  if (!Array.isArray(posts) || posts.length === 0) return;
-
-  const latest = posts
-    .filter(p => p.dateISO && p.image)
-    .sort((a, b) => b.dateISO.localeCompare(a.dateISO))[0];
-
-  if (!latest) return;
-
-  const img = document.getElementById("modelPhoto");
-  if (img) {
-    img.src = latest.image;
-    img.alt = latest.title || "Latest post";
-  }
-}
-
+let currentSorted = [];
 
 function showStatus(msg){
   statusBox.style.display = "block";
@@ -297,13 +335,36 @@ function normalize(str){
 }
 
 function getSortKeyISO(post){
-  // Use dateISO for sorting; fallback to date; then empty
+  // dateISO (YYYY-MM-DD) sorts correctly as text
   return (post.dateISO ?? post.date ?? "").toString();
 }
 
+function updateModelPhotoFromLatestPost(posts){
+  if (!Array.isArray(posts) || posts.length === 0) return;
+
+  const latest = posts
+    .filter(p => p.dateISO && p.image)
+    .sort((a, b) => b.dateISO.localeCompare(a.dateISO))[0];
+
+  if (!latest) return;
+
+  const img = document.getElementById("modelPhoto");
+  if (img) {
+    img.src = latest.image;
+    img.alt = latest.title || "Latest post";
+  }
+}
+
 function renderGrid(posts){
+  currentSorted = posts;
+
+  // Keep visibleCount valid
+  if (visibleCount > currentSorted.length) visibleCount = currentSorted.length;
+
+  const slice = currentSorted.slice(0, visibleCount);
+
   grid.innerHTML = "";
-  posts.forEach(post => {
+  slice.forEach(post => {
     const a = document.createElement("a");
     a.className = "tile";
     a.href = `post.html?id=${encodeURIComponent(post.id)}`;
@@ -322,10 +383,30 @@ function renderGrid(posts){
     grid.appendChild(a);
   });
 
-  counterValue.textContent = posts.length;
+  // Bottom counters show TOTAL posts matching (not just visible)
+  const totalMatching = currentSorted.length;
+
+  // Show load more + counter group only when total > PAGE_SIZE
+  if (totalMatching > PAGE_SIZE) {
+    loadMoreWrap.style.display = "flex";
+    counterAltWrap.style.display = "none";
+
+    counterValue.textContent = totalMatching;
+
+    const remaining = totalMatching - visibleCount;
+    loadMoreBtn.disabled = remaining <= 0;
+    loadMoreHint.textContent =
+      `Showing ${slice.length} of ${totalMatching}` + (remaining > 0 ? ` — ${remaining} more` : "");
+  } else {
+    loadMoreWrap.style.display = "none";
+    counterAltWrap.style.display = "block";
+    counterAltValue.textContent = totalMatching;
+  }
 }
 
 function applySearch(){
+  visibleCount = PAGE_SIZE;
+
   const q = normalize(searchInput.value);
 
   if(!q){
@@ -345,10 +426,8 @@ function applySort(){
   const posts = [...filteredPosts];
 
   if(mode === "newest"){
-    // Newest to Oldest using ISO key
     posts.sort((a,b) => getSortKeyISO(b).localeCompare(getSortKeyISO(a)));
   } else if(mode === "oldest"){
-    // Oldest to Newest using ISO key
     posts.sort((a,b) => getSortKeyISO(a).localeCompare(getSortKeyISO(b)));
   } else if(mode === "titleaz"){
     posts.sort((a,b) => (a.title ?? "").localeCompare(b.title ?? ""));
@@ -364,20 +443,15 @@ async function loadPosts(){
     showStatus("Loading posts...");
     const res = await fetch("./posts.json", { cache: "no-store" });
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    if(!Array.isArray(data)) throw new Error("posts is not an array");
 
-    // Optional: warn if dateISO missing
-    const missingISO = data.filter(p => !p.dateISO).length;
-    if (missingISO > 0) {
-      console.warn(`Warning: ${missingISO} posts are missing date.`);
-    }
+    const data = await res.json();
+    if(!Array.isArray(data)) throw new Error("posts.json is not an array");
 
     allPosts = data;
     filteredPosts = [...allPosts];
-    
-updateModelPhotoFromLatestPost(allPosts);
-    
+
+    updateModelPhotoFromLatestPost(allPosts);
+
     hideStatus();
     applySort();
   } catch (err){
@@ -386,13 +460,22 @@ updateModelPhotoFromLatestPost(allPosts);
   }
 }
 
-sortSelect.addEventListener("change", applySort);
+loadMoreBtn.addEventListener("click", () => {
+  visibleCount += PAGE_SIZE;
+  renderGrid(currentSorted);
+});
+
+sortSelect.addEventListener("change", () => {
+  visibleCount = PAGE_SIZE;
+  applySort();
+});
+
 searchInput.addEventListener("input", applySearch);
 
 window.addEventListener("DOMContentLoaded", loadPosts);
 </script>
 
 <!-- Age gate on every page -->
-<script src="/media/ssbbw/age-gate.js"></script>
+<script src="./age-gate.js"></script>
 </body>
 </html>
